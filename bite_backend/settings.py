@@ -76,10 +76,20 @@ WSGI_APPLICATION = 'bite_backend.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'ENGINE': 'mssql',
+        'NAME': 'Bite',               # your DB name
+        'USER': 'Bite_admin',             # your DB username
+        'PASSWORD': 'Jx2&pQk9!z',        # your password
+        'HOST': 'bite2025.database.windows.net',  # Azure SQL host
+        'PORT': '1433',
+        'COMMAND_TIMEOUT': 60,
+        'OPTIONS': {
+            'driver': 'ODBC Driver 18 for SQL Server',  # make sure this driver is installed
+        },
     }
 }
+
+
 
 
 # Password validation
