@@ -51,7 +51,7 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
-ROOT_URLCONF = 'bite_backend.urls'
+ROOT_URLCONF = 'bite.urls'
 
 TEMPLATES = [
     {

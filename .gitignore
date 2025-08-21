@@ -1,0 +1,15 @@
+# Ignore Python bytecode
+__pycache__/
+*.pyc
+
+# Ignore virtual environment (if inside project)
+.venv/
+env/
+venv/
+
+# Ignore migrations (optional if you want a clean repo)
+# bite/migrations/
+
+# Ignore OS-specific files
+.DS_Store
+Thumbs.db

@@ -1,7 +1,7 @@
 from rest_framework import serializers
-from .models import MyModel
+from .models import Cuisinetypes, Menucategories, Menuitems, Menutypes, Operatinghours, Ratings, Reservations, Restaurants, Users, Sysdiagrams
 
-class MyModelSerializer(serializers.ModelSerializer):
+class CuisineTypesSerializer(serializers.ModelSerializer):
     class Meta:
-        model = MyModel
-        fields = '__all__'
+        model = Cuisinetypes
+        fields = ['cuisine_type_id', 'cuisine_name']

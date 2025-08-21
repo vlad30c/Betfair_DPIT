@@ -1,8 +1,13 @@
-from django.shortcuts import render
-from rest_framework import viewsets
-from .models import MyModel
-from .serializers import MyModelSerializer
+from django.http import JsonResponse
+from .models import Cuisinetypes
+from .serializers import CuisineTypesSerializer
 
-class MyModelViewSet(viewsets.ModelViewSet):
-    queryset = MyModel.objects.all()
-    serializer_class = MyModelSerializer
+def cuisine_types(request):
+    """
+    Get all cuisine types.
+    Serialize them
+    Return as JSON response.
+    """
+    queryset = Cuisinetypes.objects.all()
+    serializer = CuisineTypesSerializer(queryset, many=True)
+    return JsonResponse({"cuisine types":serializer.data})

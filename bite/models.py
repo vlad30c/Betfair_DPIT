@@ -12,6 +12,9 @@ class Cuisinetypes(models.Model):
     cuisine_type_id = models.AutoField(primary_key=True)
     cuisine_name = models.CharField(unique=True, max_length=100)
 
+    def __str__(self):
+        return self.cuisine_name
+
     class Meta:
         db_table = 'CuisineTypes'
 
