@@ -82,9 +82,10 @@ DATABASES = {
         'PASSWORD': 'Jx2&pQk9!z',        # your password
         'HOST': 'bite2025.database.windows.net',  # Azure SQL host
         'PORT': '1433',
-        'COMMAND_TIMEOUT': 60,
         'OPTIONS': {
             'driver': 'ODBC Driver 18 for SQL Server',  # make sure this driver is installed
+            'TrustServerCertificate': 'yes',
+            'Connection Timeout': 30,
         },
     }
 }
