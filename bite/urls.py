@@ -4,8 +4,8 @@ from bite import views
 from rest_framework.urlpatterns import format_suffix_patterns
 
 urlpatterns = [
-    path('cuisine-types/', views.cuisine_types),
-    path('cuisine-types/<int:id>/', views.cuisine_type_detail),
+    path('tags/', views.cuisine_tags), # optional, parametru name='cuisine-tags-list-create' ca sa putem folosi numele URL-ului in loc sa-l tot scriem
+    path('tags/<int:id>/', views.cuisine_tags_detail), # optional, parametru name='cuisine-tags-detail' ca sa putem folosi numele URL-ului in loc sa-l tot scriem
 
     # Auth endpoints
     path('api/auth/', include('dj_rest_auth.urls')),                # login/logout/password

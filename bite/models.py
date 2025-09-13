@@ -6,38 +6,79 @@
 #   * Remove `managed = False` lines if you wish to allow Django to create, modify, and delete the table
 # Feel free to rename the models, but don't rename db_table values or field names.
 from django.db import models
+from django.db.models import Q
 
 
-class Cuisinetypes(models.Model):
-    cuisine_type_id = models.AutoField(primary_key=True)
-    cuisine_name = models.CharField(unique=True, max_length=100)
+class Tags(models.Model):
+    CATEGORY_CHOICES = [
+        ("cuisine", "Cuisine"),
+        ("setting", "Setting"),
+    ]
+
+    tag_id = models.AutoField(primary_key=True)  # explicit ID
+    name = models.CharField(max_length=100, unique=True)
+    category = models.CharField(max_length=20, choices=CATEGORY_CHOICES)
+
+    class Meta:
+        db_table = "Tags"
 
     def __str__(self):
-        return self.cuisine_name
+        return self.name
+
+
+class Restaurants(models.Model):
+    PRICE_LEVEL_CHOICES = [
+        ('budget-friendly', 'Budget-friendly'),
+        ('average', 'Average'),
+        ('expensive', 'Expensive'),
+    ]
+
+    restaurant_id = models.AutoField(primary_key=True)  # explicit ID
+    name = models.CharField(max_length=255)
+    description = models.TextField(blank=True, null=True)
+    email = models.EmailField(blank=True, null=True)
+    phone = models.CharField(max_length=50, blank=True, null=True)
+    website = models.URLField(blank=True, null=True)
+    address = models.CharField(max_length=500, blank=True, null=True)
+    latitude = models.FloatField(blank=True, null=True)
+    longitude = models.FloatField(blank=True, null=True)
+    price_level = models.CharField(max_length=20, choices=PRICE_LEVEL_CHOICES)
+
+    tags = models.ManyToManyField(Tags, related_name="restaurants")
 
     class Meta:
-        db_table = 'CuisineTypes'
+        db_table = "Restaurants"
+        constraints = [
+            models.CheckConstraint(
+                check=Q(price_level__in=['budget-friendly', 'average', 'expensive']),
+                name='valid_price_level',
+            ),
+        ]
+
+    def __str__(self):
+        return self.name
 
 
-class Menucategories(models.Model):
-    category_id = models.AutoField(primary_key=True)
-    menu_type = models.ForeignKey('Menutypes', models.DO_NOTHING)
-    category_name = models.CharField(unique=True, max_length=100)
+class RestaurantSchedules(models.Model):
+    schedule_id = models.AutoField(primary_key=True)  # explicit ID
+    restaurant = models.ForeignKey(Restaurants, on_delete=models.CASCADE)
+    day_of_week = models.CharField(max_length=20)  # "Monday", etc.
+    open_time = models.TimeField()
+    close_time = models.TimeField()
 
     class Meta:
-        db_table = 'MenuCategories'
+        db_table = "RestaurantSchedules"
 
 
-class Menuitems(models.Model):
-    menu_item_id = models.AutoField(primary_key=True)
-    restaurant = models.ForeignKey('Restaurants', models.DO_NOTHING)
-    category = models.ForeignKey(Menucategories, models.DO_NOTHING)
-    item_name = models.CharField(max_length=255)
-    item_description = models.TextField(blank=True, null=True)
-    price = models.DecimalField(max_digits=10, decimal_places=2)
+class RestaurantFiles(models.Model):
+    file_id = models.AutoField(primary_key=True)  # explicit ID
+    restaurant = models.ForeignKey(Restaurants, on_delete=models.CASCADE)
+    file_url = models.URLField()
+    type = models.CharField(max_length=50)  # "menu" or "photo"
+    uploaded_at_utc = models.DateTimeField(auto_now_add=True)
 
     class Meta:
-        db_table = 'MenuItems'
+        db_table = "RestaurantFiles"
 
 
 class Menutypes(models.Model):
@@ -47,22 +88,41 @@ class Menutypes(models.Model):
     class Meta:
         db_table = 'MenuTypes'
 
+    def __str__(self):
+        return self.type_name
 
-class Operatinghours(models.Model):
-    hour_id = models.AutoField(primary_key=True)
-    restaurant = models.ForeignKey('Restaurants', models.DO_NOTHING)
-    day_of_week = models.CharField(max_length=10)
-    opening_time = models.TimeField()
-    closing_time = models.TimeField()
+
+class Menucategories(models.Model):
+    category_id = models.AutoField(primary_key=True)
+    menu_type = models.ForeignKey(Menutypes, on_delete=models.DO_NOTHING)
+    category_name = models.CharField(unique=True, max_length=100)
 
     class Meta:
-        db_table = 'OperatingHours'
+        db_table = 'MenuCategories'
+
+    def __str__(self):
+        return self.category_name
+
+
+class Menuitems(models.Model):
+    menu_item_id = models.AutoField(primary_key=True)
+    restaurant = models.ForeignKey('Restaurants', on_delete=models.DO_NOTHING)
+    category = models.ForeignKey(Menucategories, on_delete=models.DO_NOTHING)
+    item_name = models.CharField(max_length=255)
+    item_description = models.TextField(blank=True, null=True)
+    price = models.DecimalField(max_digits=10, decimal_places=2)
+
+    class Meta:
+        db_table = 'MenuItems'
+
+    def __str__(self):
+        return self.item_name
 
 
 class Ratings(models.Model):
     rating_id = models.AutoField(primary_key=True)
-    restaurant = models.ForeignKey('Restaurants', models.DO_NOTHING)
-    user = models.ForeignKey('Users', models.DO_NOTHING)
+    restaurant = models.ForeignKey('Restaurants', on_delete=models.DO_NOTHING)
+    user = models.ForeignKey('Users', on_delete=models.DO_NOTHING)
     score = models.IntegerField()
     comment = models.TextField(blank=True, null=True)
     rating_date = models.DateTimeField(blank=True, null=True)
@@ -70,11 +130,14 @@ class Ratings(models.Model):
     class Meta:
         db_table = 'Ratings'
 
+    def __str__(self):
+        return f"{self.restaurant} - {self.user} ({self.score})"
+
 
 class Reservations(models.Model):
     reservation_id = models.AutoField(primary_key=True)
-    user = models.ForeignKey('Users', models.DO_NOTHING)
-    restaurant = models.ForeignKey('Restaurants', models.DO_NOTHING)
+    user = models.ForeignKey('Users', on_delete=models.DO_NOTHING)
+    restaurant = models.ForeignKey('Restaurants', on_delete=models.DO_NOTHING)
     reservation_date = models.DateField()
     reservation_time = models.TimeField()
     number_of_guests = models.IntegerField()
@@ -85,22 +148,8 @@ class Reservations(models.Model):
     class Meta:
         db_table = 'Reservations'
 
-
-class Restaurants(models.Model):
-    restaurant_id = models.AutoField(primary_key=True)
-    name = models.CharField(max_length=255)
-    description = models.TextField(blank=True, null=True)
-    address = models.CharField(max_length=255)
-    latitude = models.DecimalField(max_digits=10, decimal_places=7)
-    longitude = models.DecimalField(max_digits=10, decimal_places=7)
-    phone_number = models.CharField(max_length=20, blank=True, null=True)
-    email = models.CharField(max_length=255, blank=True, null=True)
-    website = models.CharField(max_length=255, blank=True, null=True)
-    price_level = models.CharField(max_length=4)
-    cuisine_type = models.ForeignKey(Cuisinetypes, models.DO_NOTHING)
-
-    class Meta:
-        db_table = 'Restaurants'
+    def __str__(self):
+        return f"{self.user} → {self.restaurant} on {self.reservation_date}"
 
 
 class Users(models.Model):
@@ -113,14 +162,5 @@ class Users(models.Model):
     class Meta:
         db_table = 'Users'
 
-
-class Sysdiagrams(models.Model):
-    name = models.CharField(max_length=128)
-    principal_id = models.IntegerField()
-    diagram_id = models.AutoField(primary_key=True)
-    version = models.IntegerField(blank=True, null=True)
-    definition = models.BinaryField(blank=True, null=True)
-
-    class Meta:
-        db_table = 'sysdiagrams'
-        unique_together = (('principal_id', 'name'),)
+    def __str__(self):
+        return self.username

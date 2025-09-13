@@ -1,16 +1,7 @@
 from rest_framework import serializers
-from .models import Cuisinetypes, Menucategories, Menuitems, Menutypes, Operatinghours, Ratings, Reservations, Restaurants, Sysdiagrams, Users
+from .models import Tags, Menucategories, Menuitems, Menutypes, RestaurantSchedules, Ratings, Reservations, Restaurants, Users, RestaurantFiles
+from django.contrib.auth.models import User
 from dj_rest_auth.registration.serializers import RegisterSerializer
-from django.contrib.auth.models import User
-
-from rest_framework import serializers
-from django.contrib.auth.models import User
-
-from rest_framework import serializers
-from django.contrib.auth.models import User
-
-from rest_framework import serializers
-from django.contrib.auth.models import User
 
 class RegisterSerializer(serializers.ModelSerializer):
     password1 = serializers.CharField(write_only=True)
@@ -43,7 +34,15 @@ class RegisterSerializer(serializers.ModelSerializer):
         return user
 
 
-class CuisineTypesSerializer(serializers.ModelSerializer):
+class TagsSerializer(serializers.ModelSerializer):
     class Meta:
-        model = Cuisinetypes
-        fields = ['cuisine_type_id', 'cuisine_name']
+        model = Tags
+        fields = ['tag_id', 'name', 'category']
+        read_only_fields = ['category']  # optional, prevents changing category via API
+
+    def create(self, validated_data):
+        # Optionally enforce category if you want to force cuisine tags
+        category = validated_data.get('category')
+        if category not in ['cuisine', 'setting']:
+            raise serializers.ValidationError("Invalid category for tag.")
+        return super().create(validated_data)
