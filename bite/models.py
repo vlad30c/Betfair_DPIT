@@ -36,12 +36,12 @@ class Restaurants(models.Model):
     restaurant_id = models.AutoField(primary_key=True)  # explicit ID
     name = models.CharField(max_length=255)
     description = models.TextField(blank=True, null=True)
-    email = models.EmailField(blank=True, null=True)
-    phone = models.CharField(max_length=50, blank=True, null=True)
-    website = models.URLField(blank=True, null=True)
-    address = models.CharField(max_length=500, blank=True, null=True)
-    latitude = models.FloatField(blank=True, null=True)
-    longitude = models.FloatField(blank=True, null=True)
+    email = models.EmailField(max_length=255, blank=True, null=True)
+    phone_number = models.CharField(max_length=20, blank=True, null=True)
+    website = models.URLField(max_length=255, blank=True, null=True)
+    address = models.CharField(max_length=255)
+    latitude = models.DecimalField(max_digits=10, decimal_places=7)
+    longitude = models.DecimalField(max_digits=10, decimal_places=7)
     price_level = models.CharField(max_length=20, choices=PRICE_LEVEL_CHOICES)
 
     tags = models.ManyToManyField(Tags, related_name="restaurants")
@@ -121,8 +121,8 @@ class Menuitems(models.Model):
 
 class Ratings(models.Model):
     rating_id = models.AutoField(primary_key=True)
-    restaurant = models.ForeignKey('Restaurants', on_delete=models.DO_NOTHING)
-    user = models.ForeignKey('Users', on_delete=models.DO_NOTHING)
+    restaurant = models.ForeignKey('Restaurants', on_delete=models.CASCADE)
+    user = models.ForeignKey('Users', on_delete=models.SET_NULL, null=True)
     score = models.IntegerField()
     comment = models.TextField(blank=True, null=True)
     rating_date = models.DateTimeField(blank=True, null=True)
@@ -136,8 +136,8 @@ class Ratings(models.Model):
 
 class Reservations(models.Model):
     reservation_id = models.AutoField(primary_key=True)
-    user = models.ForeignKey('Users', on_delete=models.DO_NOTHING)
-    restaurant = models.ForeignKey('Restaurants', on_delete=models.DO_NOTHING)
+    user = models.ForeignKey('Users', on_delete=models.CASCADE)
+    restaurant = models.ForeignKey('Restaurants', on_delete=models.CASCADE)
     reservation_date = models.DateField()
     reservation_time = models.TimeField()
     number_of_guests = models.IntegerField()

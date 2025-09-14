@@ -46,3 +46,44 @@ class TagsSerializer(serializers.ModelSerializer):
         if category not in ['cuisine', 'setting']:
             raise serializers.ValidationError("Invalid category for tag.")
         return super().create(validated_data)
+
+
+class RestaurantsSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Restaurants
+        fields = ['restaurant_id', 'name', 'description', 'email', 'phone_number',
+                  'website', 'address', 'latitude', 'longitude', 'price_level', 'tags']
+
+
+class RestaurantSchedulesSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = RestaurantSchedules
+        fields = ['schedule_id', 'restaurant', 'day_of_week', 'open_time', 'close_time']
+
+
+class RestaurantFilesSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = RestaurantFiles
+        fields = ['file_id', 'restaurant', 'file_url','type', 'uploaded_at_utc']
+        read_only_fields = ['uploaded_at_utc']
+
+
+class RatingsSerializer(serializers.ModelSerializer):
+    user_display = serializers.SerializerMethodField() # read-only field, ca atunci cand user(adica cheia spre el)=0, sa poti afisa "Deleted user"
+
+    class Meta:
+        model = Ratings
+        fields = ['rating_id', 'restaurant', 'user', 'user_display', 'score',
+                  'comment', 'rating_date']
+
+    def get_user_display(self, obj):
+        if obj.user is None:
+            return "Deleted user"
+        return obj.user.username
+    
+
+class ReservationsSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Reservations
+        fields = ['reservation_id', 'user', 'restaurant', 'reservation_date', 'reservation_time',
+                  'number_of_guests', 'status', 'special_requests', 'booking_timestamp']
