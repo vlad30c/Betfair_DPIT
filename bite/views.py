@@ -9,6 +9,16 @@ from rest_framework import status
 
 ALLOWED_TAG_CATEGORIES = [choice[0] for choice in Tags.CATEGORY_CHOICES]
 
+
+@api_view(['GET'])
+def tag_categories(request):
+    """
+    Return the allowed tag categories.
+    """
+    categories = {key: label for key, label in Tags.CATEGORY_CHOICES}
+    return Response({"tag_categories": categories})
+
+
 @api_view(['GET', 'POST'])
 def tags_by_category(request, category, format=None):
     if category not in ALLOWED_TAG_CATEGORIES:
