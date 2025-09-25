@@ -1,7 +1,6 @@
 from rest_framework import serializers
-from .models import Tags, Menucategories, Menuitems, Menutypes, RestaurantSchedules, Ratings, Reservations, Restaurants, Users, RestaurantFiles
+from .models import Tags, Menucategories, Menuitems, Menutypes, RestaurantSchedules, Ratings, Reservations, Restaurants, RestaurantFiles
 from django.contrib.auth.models import User
-from dj_rest_auth.registration.serializers import RegisterSerializer
 
 class RegisterSerializer(serializers.ModelSerializer):
     password1 = serializers.CharField(write_only=True)
@@ -86,4 +85,4 @@ class ReservationsSerializer(serializers.ModelSerializer):
     class Meta:
         model = Reservations
         fields = ['reservation_id', 'user', 'restaurant', 'reservation_date', 'reservation_time',
-                  'number_of_guests', 'status', 'special_requests', 'booking_timestamp']
+                  'number_of_guests', 'status', 'special_requests', 'booking_timestamp', 'phone_number']
