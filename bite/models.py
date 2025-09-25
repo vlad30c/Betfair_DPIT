@@ -36,10 +36,11 @@ class Restaurants(models.Model):
     restaurant_id = models.AutoField(primary_key=True)  # explicit ID
     name = models.CharField(max_length=255)
     description = models.TextField(blank=True, null=True)
-    email = models.EmailField(max_length=255, blank=True, null=True)
+    email = models.EmailField(max_length=255, blank=True, null=True, unique=True)
     phone_number = models.CharField(max_length=20, blank=True, null=True)
     website = models.URLField(max_length=255, blank=True, null=True)
     address = models.CharField(max_length=255)
+    city = models.CharField(max_length=100, blank=True, null=True)
     latitude = models.DecimalField(max_digits=10, decimal_places=7)
     longitude = models.DecimalField(max_digits=10, decimal_places=7)
     price_level = models.CharField(max_length=20, choices=PRICE_LEVEL_CHOICES)

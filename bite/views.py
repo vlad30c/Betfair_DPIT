@@ -14,6 +14,7 @@ ALLOWED_TAG_CATEGORIES = [choice[0] for choice in Tags.CATEGORY_CHOICES]
 def tag_categories(request):
     """
     Return the allowed tag categories.
+    tags/
     """
     categories = {key: label for key, label in Tags.CATEGORY_CHOICES}
     return Response({"tag_categories": categories})
@@ -21,6 +22,9 @@ def tag_categories(request):
 
 @api_view(['GET', 'POST'])
 def tags_by_category(request, category, format=None):
+    """
+    tags/<str:category>/
+    """
     if category not in ALLOWED_TAG_CATEGORIES:
         return Response({"error": f"Invalid category '{category}'. Allowed: {ALLOWED_TAG_CATEGORIES}"}, status=status.HTTP_400_BAD_REQUEST)
 
@@ -39,6 +43,9 @@ def tags_by_category(request, category, format=None):
 
 @api_view(['GET', 'PUT', 'DELETE'])
 def tag_detail_by_category(request, category, id, format=None):
+    """
+    tags/<str:category>/<int:id>/
+    """
     if category not in ALLOWED_TAG_CATEGORIES:
         return Response({"error": f"Invalid category '{category}'. Allowed: {ALLOWED_TAG_CATEGORIES}"}, status=status.HTTP_400_BAD_REQUEST)
 
@@ -74,6 +81,17 @@ def restaurants(request, format=None):
     """
     if request.method == 'GET':
         queryset = Restaurants.objects.all()
+
+        # --- Filtering by city (partial match, case-insensitive) ---
+        city = request.GET.get("city", "")
+        if city:
+            queryset = queryset.filter(city__icontains=city)
+
+        # --- Searching by partial restaurant name ---
+        search = request.GET.get("search")
+        if search:
+            queryset = queryset.filter(name__icontains=search)
+
         serializer = RestaurantsSerializer(queryset, many=True)
         return Response({"restaurants": serializer.data})
 

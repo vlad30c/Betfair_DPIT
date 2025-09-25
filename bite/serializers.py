@@ -51,8 +51,8 @@ class TagsSerializer(serializers.ModelSerializer):
 class RestaurantsSerializer(serializers.ModelSerializer):
     class Meta:
         model = Restaurants
-        fields = ['restaurant_id', 'name', 'description', 'email', 'phone_number',
-                  'website', 'address', 'latitude', 'longitude', 'price_level', 'tags']
+        fields = ['restaurant_id', 'name', 'description', 'email', 'phone_number','website',
+                  'address', 'city', 'latitude', 'longitude', 'price_level', 'tags']
 
 
 class RestaurantSchedulesSerializer(serializers.ModelSerializer):
