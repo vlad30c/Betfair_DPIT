@@ -13,3 +13,6 @@ venv/
 # Ignore OS-specific files
 .DS_Store
 Thumbs.db
+
+# Dont add google service acc to git
+credentials/

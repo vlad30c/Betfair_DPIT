@@ -38,7 +38,7 @@ class Restaurants(models.Model):
     description = models.TextField(blank=True, null=True)
     email = models.EmailField(max_length=255, blank=True, null=True, unique=True)
     phone_number = models.CharField(max_length=20, blank=True, null=True)
-    website = models.URLField(max_length=255, blank=True, null=True)
+    website = models.URLField(max_length=500, blank=True, null=True)
     address = models.CharField(max_length=255)
     city = models.CharField(max_length=100, blank=True, null=True)
     latitude = models.DecimalField(max_digits=10, decimal_places=7)
@@ -74,7 +74,7 @@ class RestaurantSchedules(models.Model):
 class RestaurantFiles(models.Model):
     file_id = models.AutoField(primary_key=True)  # explicit ID
     restaurant = models.ForeignKey(Restaurants, on_delete=models.CASCADE)
-    file_url = models.URLField()
+    file_url = models.URLField(max_length=1500)
     type = models.CharField(max_length=50)  # "menu" or "photo"
     uploaded_at_utc = models.DateTimeField(auto_now_add=True)
 

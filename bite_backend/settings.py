@@ -32,6 +32,7 @@ ALLOWED_HOSTS = ['*']
 
 INSTALLED_APPS = [
     #Django apps
+    'django_extensions',
     'dj_rest_auth',
     'dj_rest_auth.registration',
     'django.contrib.sites',
