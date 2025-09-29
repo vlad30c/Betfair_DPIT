@@ -4,6 +4,16 @@ from .serializers import TagsSerializer, RestaurantsSerializer, RestaurantSchedu
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from rest_framework import status
+from rest_framework import generics, permissions
+from .serializers import UserUpdateSerializer
+
+class UpdateAuthenticatedUserView(generics.UpdateAPIView):
+    serializer_class = UserUpdateSerializer
+    permission_classes = [permissions.IsAuthenticated]
+
+    def get_object(self):
+        return self.request.user
+
 
 # ------------------ Tags ------------------
 
