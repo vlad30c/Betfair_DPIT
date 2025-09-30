@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>CLIENT_ID</key>
+	<string>357980535788-2jc2d4nq71cv1b91ao6k6kphko676441.apps.googleusercontent.com</string>
+	<key>REVERSED_CLIENT_ID</key>
+	<string>com.googleusercontent.apps.357980535788-2jc2d4nq71cv1b91ao6k6kphko676441</string>
+	<key>ANDROID_CLIENT_ID</key>
+	<string>357980535788-b694f6mahgmbm91ssdsvg3fjq7kl9jbf.apps.googleusercontent.com</string>
+	<key>API_KEY</key>
+	<string>AIzaSyAdmUJEi1xPviK4ELwEo8eN2Cdgfj282DY</string>
+	<key>GCM_SENDER_ID</key>
+	<string>357980535788</string>
+	<key>PLIST_VERSION</key>
+	<string>1</string>
+	<key>BUNDLE_ID</key>
+	<string>com.mycompany.bite</string>
+	<key>PROJECT_ID</key>
+	<string>ceva-ceva-wmi3fb</string>
+	<key>STORAGE_BUCKET</key>
+	<string>ceva-ceva-wmi3fb.firebasestorage.app</string>
+	<key>IS_ADS_ENABLED</key>
+	<false></false>
+	<key>IS_ANALYTICS_ENABLED</key>
+	<false></false>
+	<key>IS_APPINVITE_ENABLED</key>
+	<true></true>
+	<key>IS_GCM_ENABLED</key>
+	<true></true>
+	<key>IS_SIGNIN_ENABLED</key>
+	<true></true>
+	<key>GOOGLE_APP_ID</key>
+	<string>1:357980535788:ios:c7094e89bf537dd3765ec9</string>
+</dict>
+</plist>
