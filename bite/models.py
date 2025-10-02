@@ -1,13 +1,15 @@
-# This is an auto-generated Django model module.
-# You'll have to do the following manually to clean this up:
-#   * Rearrange models' order
-#   * Make sure each model has one field with primary_key=True
-#   * Make sure each ForeignKey and OneToOneField has `on_delete` set to the desired behavior
-#   * Remove `managed = False` lines if you wish to allow Django to create, modify, and delete the table
-# Feel free to rename the models, but don't rename db_table values or field names.
 from django.db import models
 from django.db.models import Q
+from django.conf import settings
+from django.contrib.auth.models import User
 
+class Profile(models.Model):
+    user = models.OneToOneField(User, on_delete=models.CASCADE)
+    phone_number = models.CharField(max_length=20, blank=True, null=True)
+    profile_picture = models.ImageField(upload_to='profile_pics/', blank=True, null=True)
+
+    def __str__(self):
+        return f"{self.user.username}'s profile"
 
 class Tags(models.Model):
     CATEGORY_CHOICES = [
@@ -123,7 +125,7 @@ class Menuitems(models.Model):
 class Ratings(models.Model):
     rating_id = models.AutoField(primary_key=True)
     restaurant = models.ForeignKey('Restaurants', on_delete=models.CASCADE)
-    #user = models.ForeignKey('Users', on_delete=models.SET_NULL, null=True)
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.SET_NULL, null=True)
     score = models.IntegerField()
     comment = models.TextField(blank=True, null=True)
     rating_date = models.DateTimeField(blank=True, null=True)
@@ -137,7 +139,7 @@ class Ratings(models.Model):
 
 class Reservations(models.Model):
     reservation_id = models.AutoField(primary_key=True)
-    #user = models.ForeignKey('Users', on_delete=models.CASCADE)
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     restaurant = models.ForeignKey('Restaurants', on_delete=models.CASCADE)
     reservation_date = models.DateField()
     reservation_time = models.TimeField()
@@ -145,6 +147,7 @@ class Reservations(models.Model):
     status = models.CharField(max_length=50)
     special_requests = models.TextField(blank=True, null=True)
     booking_timestamp = models.DateTimeField(blank=True, null=True)
+    phone_number = models.CharField(max_length=15, blank=True, null=True)
 
     class Meta:
         db_table = 'Reservations'

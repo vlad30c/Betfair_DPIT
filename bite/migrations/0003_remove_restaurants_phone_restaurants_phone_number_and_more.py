@@ -2,6 +2,7 @@
 
 import django.db.models.deletion
 from django.db import migrations, models
+from django.conf import settings
 
 
 class Migration(migrations.Migration):
@@ -28,7 +29,7 @@ class Migration(migrations.Migration):
         migrations.AlterField(
             model_name='ratings',
             name='user',
-            field=models.ForeignKey(null=True, on_delete=django.db.models.deletion.SET_NULL, to='bite.users'),
+            field=models.ForeignKey(null=True, on_delete=django.db.models.deletion.SET_NULL, to=settings.AUTH_USER_MODEL),
         ),
         migrations.AlterField(
             model_name='reservations',
@@ -38,7 +39,7 @@ class Migration(migrations.Migration):
         migrations.AlterField(
             model_name='reservations',
             name='user',
-            field=models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='bite.users'),
+            field=models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to=settings.AUTH_USER_MODEL),
         ),
         migrations.AlterField(
             model_name='restaurants',

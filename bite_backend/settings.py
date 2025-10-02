@@ -65,18 +65,32 @@ AUTHENTICATION_BACKENDS = (
 
 SITE_ID = 1
 
-ACCOUNT_EMAIL_VERIFICATION = "none"  # during development only
-ACCOUNT_LOGIN_METHODS = {"email"}  # users log in with email only
-ACCOUNT_SIGNUP_FIELDS = ["email*", "password1*", "password2*"]  # required fields during registration
+# Email verification (keep "none" only for dev; use "mandatory" in prod)
+ACCOUNT_EMAIL_VERIFICATION = "none"  
+
+# Allow login by BOTH username and email
+ACCOUNT_LOGIN_METHODS = {"username", "email"}  
+
+# Signup fields (username + email + password confirmation)
+ACCOUNT_SIGNUP_FIELDS = [
+    "username*",
+    "email*",
+    "password1*",
+    "password2*",
+]
+
 
 REST_AUTH_REGISTER_SERIALIZERS = {
     'REGISTER_SERIALIZER': 'bite.serializers.RegisterSerializer',
 }
 
 REST_FRAMEWORK = {
-    'DEFAULT_AUTHENTICATION_CLASSES': [
+    'DEFAULT_AUTHENTICATION_CLASSES': (
         'rest_framework.authentication.TokenAuthentication',
-    ],
+    ),
+    'DEFAULT_PERMISSION_CLASSES': (
+        'rest_framework.permissions.IsAuthenticated',
+    )
 }
 
 

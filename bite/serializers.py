@@ -1,7 +1,38 @@
 from rest_framework import serializers
-from .models import Tags, Menucategories, Menuitems, Menutypes, RestaurantSchedules, Ratings, Reservations, Restaurants, Users, RestaurantFiles
+from .models import Tags, Menucategories, Menuitems, Menutypes, RestaurantSchedules, Ratings, Reservations, Restaurants, RestaurantFiles
 from django.contrib.auth.models import User
-from dj_rest_auth.registration.serializers import RegisterSerializer
+from .models import Profile
+
+class ProfileSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Profile
+        fields = ['phone_number', 'profile_picture']
+
+class UserUpdateSerializer(serializers.ModelSerializer):
+    profile = ProfileSerializer()
+
+    class Meta:
+        model = User
+        fields = ['first_name', 'last_name', 'email', 'profile']
+
+    def update(self, instance, validated_data):
+        # Extract profile data
+        profile_data = validated_data.pop('profile', {})
+        profile = instance.profile  
+
+        # Update User fields
+        instance.first_name = validated_data.get('first_name', instance.first_name)
+        instance.last_name = validated_data.get('last_name', instance.last_name)
+        instance.email = validated_data.get('email', instance.email)
+        instance.save()
+
+        # Update Profile fields
+        profile.phone_number = profile_data.get('phone_number', profile.phone_number)
+        profile.profile_picture = profile_data.get('profile_picture', profile.profile_picture)
+        profile.save()
+
+        return instance
+
 
 class RegisterSerializer(serializers.ModelSerializer):
     password1 = serializers.CharField(write_only=True)
@@ -89,4 +120,4 @@ class ReservationsSerializer(serializers.ModelSerializer):
     class Meta:
         model = Reservations
         fields = ['reservation_id', 'user', 'restaurant', 'reservation_date', 'reservation_time',
-                  'number_of_guests', 'status', 'special_requests', 'booking_timestamp']
+                  'number_of_guests', 'status', 'special_requests', 'booking_timestamp', 'phone_number']
