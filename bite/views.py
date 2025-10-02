@@ -91,7 +91,7 @@ def restaurants(request, format=None):
     """
     if request.method == 'GET':
         queryset = Restaurants.objects.all()
-
+        
         # --- Filtering by city (partial match, case-insensitive) ---
         city = request.GET.get("city", "")
         if city:
@@ -101,7 +101,26 @@ def restaurants(request, format=None):
         search = request.GET.get("search")
         if search:
             queryset = queryset.filter(name__icontains=search)
+        
+        # --- Filter by price level ---
+        price_level = request.GET.get("price_level")
+        if price_level:
+            queryset = queryset.filter(price_level=price_level)
 
+         # --- Filter by tag (cuisine/setting) ---
+        tag_param = request.GET.get("tags")  # e.g. "Asian,Romantic"
+        if tag_param:
+            tags = [t.strip() for t in tag_param.split(",") if t.strip()]
+            for t in tags:
+                queryset = queryset.filter(tags__name__iexact=t)
+        """
+        # --- Filter by minimum rating ---
+        min_rating = request.GET.get("min_rating")
+        if min_rating:
+            queryset = queryset.filter(avg_rating__gte=float(min_rating))
+        """
+        
+        queryset = queryset.distinct()
         serializer = RestaurantsSerializer(queryset, many=True)
         return Response({"restaurants": serializer.data})
 
