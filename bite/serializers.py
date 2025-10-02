@@ -49,10 +49,13 @@ class TagsSerializer(serializers.ModelSerializer):
 
 
 class RestaurantsSerializer(serializers.ModelSerializer):
+    tags = TagsSerializer(many=True, read_only=True)
+    avg_rating = serializers.FloatField(read_only=True)
+
     class Meta:
         model = Restaurants
         fields = ['restaurant_id', 'name', 'description', 'email', 'phone_number','website',
-                  'address', 'city', 'latitude', 'longitude', 'price_level', 'tags']
+                  'address', 'city', 'latitude', 'longitude', 'price_level', 'tags', 'avg_rating']
 
 
 class RestaurantSchedulesSerializer(serializers.ModelSerializer):

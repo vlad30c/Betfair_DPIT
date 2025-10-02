@@ -123,7 +123,7 @@ class Menuitems(models.Model):
 class Ratings(models.Model):
     rating_id = models.AutoField(primary_key=True)
     restaurant = models.ForeignKey('Restaurants', on_delete=models.CASCADE)
-    user = models.ForeignKey('Users', on_delete=models.SET_NULL, null=True)
+    #user = models.ForeignKey('Users', on_delete=models.SET_NULL, null=True)
     score = models.IntegerField()
     comment = models.TextField(blank=True, null=True)
     rating_date = models.DateTimeField(blank=True, null=True)
@@ -137,7 +137,7 @@ class Ratings(models.Model):
 
 class Reservations(models.Model):
     reservation_id = models.AutoField(primary_key=True)
-    user = models.ForeignKey('Users', on_delete=models.CASCADE)
+    #user = models.ForeignKey('Users', on_delete=models.CASCADE)
     restaurant = models.ForeignKey('Restaurants', on_delete=models.CASCADE)
     reservation_date = models.DateField()
     reservation_time = models.TimeField()
@@ -151,17 +151,3 @@ class Reservations(models.Model):
 
     def __str__(self):
         return f"{self.user} → {self.restaurant} on {self.reservation_date}"
-
-
-class Users(models.Model):
-    user_id = models.AutoField(primary_key=True)
-    username = models.CharField(unique=True, max_length=255)
-    email = models.CharField(unique=True, max_length=255)
-    password_hash = models.CharField(max_length=255)
-    registration_date = models.DateTimeField(blank=True, null=True)
-
-    class Meta:
-        db_table = 'Users'
-
-    def __str__(self):
-        return self.username
