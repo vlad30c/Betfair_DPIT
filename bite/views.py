@@ -1,6 +1,6 @@
 from django.http import JsonResponse
-from .models import Tags, Restaurants, RestaurantSchedules, RestaurantFiles, Ratings, Reservations
-from .serializers import TagsSerializer, RestaurantsSerializer, RestaurantSchedulesSerializer, RestaurantFilesSerializer, RatingsSerializer, ReservationsSerializer
+from .models import Tags, Restaurants, RestaurantSchedules, RestaurantFiles, Ratings, Reservations, Favorites
+from .serializers import TagsSerializer, RestaurantsSerializer, RestaurantSchedulesSerializer, RestaurantFilesSerializer, RatingsSerializer, ReservationsSerializer, FavoritesSerializer
 from rest_framework.decorators import api_view, permission_classes
 from rest_framework.response import Response
 from rest_framework import status
@@ -336,3 +336,43 @@ def reservation_detail(request, id, format=None):
     elif request.method == 'DELETE':
         reservation.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
+    
+# ------------------ Favorites ------------------
+
+@api_view(['GET'])
+@permission_classes([IsAuthenticated])
+def favorites_list(request):
+    """
+    Get all favorite restaurants of the authenticated user.
+    """
+    favorites = Favorites.objects.filter(user=request.user)
+    serializer = FavoritesSerializer(favorites, many=True)
+    return Response({"favorites": serializer.data}, status=status.HTTP_200_OK)
+
+
+@api_view(['POST'])
+@permission_classes([IsAuthenticated])
+def toggle_favorite(request):
+    """
+    Toggle a restaurant as favorite.
+    If already favorited → remove it.
+    If not favorited → add it.
+    """
+    restaurant_id = request.data.get('restaurant')
+    if not restaurant_id:
+        return Response({"error": "Restaurant ID required"}, status=status.HTTP_400_BAD_REQUEST)
+
+    restaurant = Restaurants.objects.filter(restaurant_id=restaurant_id).first()
+    if not restaurant:
+        return Response({"error": "Restaurant not found"}, status=status.HTTP_404_NOT_FOUND)
+
+    favorite = Favorites.objects.filter(user=request.user, restaurant=restaurant).first()
+
+    if favorite:
+        # Already favorited → remove it
+        favorite.delete()
+        return Response({"message": "Removed from favorites", "favorited": False}, status=status.HTTP_200_OK)
+    else:
+        # Not favorited → add it
+        favorite = Favorites.objects.create(user=request.user, restaurant=restaurant)
+        return Response({"message": "Added to favorites", "favorited": True}, status=status.HTTP_201_CREATED)

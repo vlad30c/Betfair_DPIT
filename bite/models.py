@@ -154,3 +154,16 @@ class Reservations(models.Model):
 
     def __str__(self):
         return f"{self.user} → {self.restaurant} on {self.reservation_date}"
+
+class Favorites(models.Model):
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name='favorites')
+    restaurant = models.ForeignKey(Restaurants, on_delete=models.CASCADE, related_name='favorited_by')
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        db_table = 'Favorites'
+        unique_together = ('user', 'restaurant')  # prevent duplicates
+
+    def __str__(self):
+        return f"{self.user.username} → {self.restaurant.name}"
+

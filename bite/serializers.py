@@ -1,7 +1,7 @@
 from rest_framework import serializers
 from .models import Tags, Menucategories, Menuitems, Menutypes, RestaurantSchedules, Ratings, Reservations, Restaurants, RestaurantFiles
 from django.contrib.auth.models import User
-from .models import Profile
+from .models import Profile, Favorites
 
 class ProfileSerializer(serializers.ModelSerializer):
     class Meta:
@@ -130,3 +130,10 @@ class ReservationsSerializer(serializers.ModelSerializer):
         model = Reservations
         fields = ['reservation_id', 'user', 'restaurant', 'reservation_date', 'reservation_time',
                   'number_of_guests', 'status', 'special_requests', 'booking_timestamp', 'phone_number']
+        
+class FavoritesSerializer(serializers.ModelSerializer):
+    restaurant_name = serializers.CharField(source='restaurant.name', read_only=True)
+
+    class Meta:
+        model = Favorites
+        fields = ['id', 'restaurant', 'restaurant_name', 'created_at']

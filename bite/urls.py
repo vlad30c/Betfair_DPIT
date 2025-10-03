@@ -2,7 +2,8 @@ from django.contrib import admin
 from django.urls import path, include
 from bite import views
 from rest_framework.urlpatterns import format_suffix_patterns
-from .views import UpdateAuthenticatedUserView, get_current_user
+from .views import UpdateAuthenticatedUserView, get_current_user, toggle_favorite, favorites_list
+
 
 urlpatterns = [
     # Tags endpoints
@@ -20,8 +21,9 @@ urlpatterns = [
     path('api/me/update/', UpdateAuthenticatedUserView.as_view(), name='update-user'),
     path('api/users/me/', get_current_user, name='get-current-user'),
 
-    # Social login via allauth
-    path('api/auth/social/', include('allauth.socialaccount.urls')),
+    # Favorites endpoint
+    path('favorites/toggle/', toggle_favorite, name='favorites-toggle'),
+    path('favorites/', favorites_list, name='favorites-list'),
 ]
 
 urlpatterns = format_suffix_patterns(urlpatterns)
