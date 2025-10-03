@@ -82,11 +82,20 @@ class TagsSerializer(serializers.ModelSerializer):
 class RestaurantsSerializer(serializers.ModelSerializer):
     tags = TagsSerializer(many=True, read_only=True)
     avg_rating = serializers.FloatField(read_only=True)
+    first_photo = serializers.SerializerMethodField()
 
     class Meta:
         model = Restaurants
-        fields = ['restaurant_id', 'name', 'description', 'email', 'phone_number','website',
-                  'address', 'city', 'latitude', 'longitude', 'price_level', 'tags', 'avg_rating']
+        fields = ['restaurant_id', 'name', 'description', 'email', 'phone_number',
+                  'website', 'address', 'city', 'latitude', 'longitude',
+                  'price_level', 'tags', 'avg_rating', 'first_photo']
+    
+    def get_first_photo(self, obj):
+        # Get the first photo of type "photo" for this restaurant
+        photo = obj.restaurantfiles_set.filter(type="photo").first()
+        if photo:
+            return photo.file_url
+        return None
 
 
 class RestaurantSchedulesSerializer(serializers.ModelSerializer):
