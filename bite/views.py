@@ -201,11 +201,25 @@ def restaurant_schedule_detail(request, id, format=None):
 
 @api_view(['GET', 'POST'])
 def restaurant_files(request, format=None):
+    """
+    GET: Return all restaurant files (with optional filtering).
+    POST: Upload a new restaurant file (menu, photo, etc).
+    """
     if request.method == 'GET':
         queryset = RestaurantFiles.objects.all()
+
+        # --- Optional filters ---
+        restaurant_id = request.GET.get("restaurant_id")
+        if restaurant_id:
+            queryset = queryset.filter(restaurant__restaurant_id=restaurant_id)
+
+        file_type = request.GET.get("type")
+        if file_type:
+            queryset = queryset.filter(type__iexact=file_type)
+
         serializer = RestaurantFilesSerializer(queryset, many=True)
         return Response({"restaurant_files": serializer.data})
-
+    
     elif request.method == 'POST':
         serializer = RestaurantFilesSerializer(data=request.data)
         if serializer.is_valid():
@@ -216,6 +230,10 @@ def restaurant_files(request, format=None):
 
 @api_view(['GET', 'DELETE'])
 def restaurant_file_detail(request, id, format=None):
+    """
+    GET: Get a single restaurant file.
+    DELETE: Remove a file.
+    """
     try:
         file = RestaurantFiles.objects.get(pk=id)
     except RestaurantFiles.DoesNotExist:
