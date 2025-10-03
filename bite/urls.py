@@ -2,7 +2,7 @@ from django.contrib import admin
 from django.urls import path, include
 from bite import views
 from rest_framework.urlpatterns import format_suffix_patterns
-from .views import UpdateAuthenticatedUserView
+from .views import UpdateAuthenticatedUserView, get_current_user
 
 urlpatterns = [
     # Tags endpoints
@@ -18,6 +18,8 @@ urlpatterns = [
     path('api/auth/', include('dj_rest_auth.urls')),                # login/logout/password
     path('api/auth/registration/', include('dj_rest_auth.registration.urls')),  # signup
     path('api/me/update/', UpdateAuthenticatedUserView.as_view(), name='update-user'),
+    path('api/users/me/', get_current_user, name='get-current-user'),
+
     # Social login via allauth
     path('api/auth/social/', include('allauth.socialaccount.urls')),
 ]
