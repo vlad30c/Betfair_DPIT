@@ -260,6 +260,25 @@ def restaurant_file_detail(request, id, format=None):
         file.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
 
+# ------------------ Cities ------------------
+
+@api_view(['GET'])
+def unique_cities(request):
+    """
+    Returns a list of unique cities from the Restaurants table.
+    Optional query param 'search' filters cities containing the text.
+    """
+    search = request.GET.get('search', '')  # get the search param, default to empty string
+
+    # Get all cities, optionally filter by search text
+    cities = Restaurants.objects.exclude(city__isnull=True).exclude(city__exact='')
+    if search:
+        cities = cities.filter(city__icontains=search)
+    
+    # Extract city names and make unique
+    unique_cities = sorted(set(cities.values_list('city', flat=True)))
+
+    return Response({"cities": unique_cities})
 
 # ------------------ Ratings ------------------
 

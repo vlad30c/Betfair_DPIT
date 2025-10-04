@@ -15,6 +15,9 @@ urlpatterns = [
     path('restaurants/', views.restaurants),
     path('restaurants/<int:id>/', views.restaurant_detail),
 
+    # Unique cities ednpoint
+    path('restaurants/cities/', views.unique_cities, name='unique_cities'),
+    
     # Auth endpoints
     path('api/auth/', include('dj_rest_auth.urls')),                # login/logout/password
     path('api/auth/registration/', include('dj_rest_auth.registration.urls')),  # signup
