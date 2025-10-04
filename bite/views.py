@@ -18,8 +18,13 @@ class UpdateAuthenticatedUserView(generics.UpdateAPIView):
 @api_view(['GET'])
 @permission_classes([IsAuthenticated])
 def get_current_user(request):
-    user = request.user
-    serializer = UserUpdateSerializer(user)
+    if not request.user or not request.user.is_authenticated:
+        return Response(
+            {"detail": "Invalid or missing token."},
+            status=status.HTTP_401_UNAUTHORIZED
+        )
+    
+    serializer = UserUpdateSerializer(request.user)
     return Response(serializer.data)
 
 
