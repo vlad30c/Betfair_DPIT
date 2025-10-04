@@ -132,8 +132,8 @@ class ReservationsSerializer(serializers.ModelSerializer):
                   'number_of_guests', 'status', 'special_requests', 'booking_timestamp', 'phone_number']
         
 class FavoritesSerializer(serializers.ModelSerializer):
-    restaurant_name = serializers.CharField(source='restaurant.name', read_only=True)
+    restaurant = RestaurantsSerializer(read_only=True)  # nest it here
 
     class Meta:
         model = Favorites
-        fields = ['id', 'restaurant', 'restaurant_name', 'created_at']
+        fields = ['id', 'restaurant']  # no 'first_photo' here
