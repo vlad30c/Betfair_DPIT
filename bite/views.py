@@ -138,7 +138,7 @@ def restaurants(request, format=None):
         return Response({"restaurants": serializer.data})
 
     elif request.method == 'POST':
-        serializer = RestaurantsSerializer(data=request.data)
+        serializer = RestaurantsSerializer(data=request.data, context={'request': request})
         if serializer.is_valid():
             serializer.save()
             return Response(serializer.data, status=status.HTTP_201_CREATED)

@@ -79,23 +79,37 @@ class TagsSerializer(serializers.ModelSerializer):
         return super().create(validated_data)
 
 
+from rest_framework import serializers
+from .models import Restaurants, Favorites  # make sure Favorites is imported
+
 class RestaurantsSerializer(serializers.ModelSerializer):
     tags = TagsSerializer(many=True, read_only=True)
     avg_rating = serializers.FloatField(read_only=True)
     first_photo = serializers.SerializerMethodField()
+    is_favorited = serializers.SerializerMethodField()
 
     class Meta:
         model = Restaurants
-        fields = ['restaurant_id', 'name', 'description', 'email', 'phone_number',
-                  'website', 'address', 'city', 'latitude', 'longitude',
-                  'price_level', 'tags', 'avg_rating', 'first_photo']
-    
+        fields = [
+            'restaurant_id', 'name', 'description', 'email', 'phone_number',
+            'website', 'address', 'city', 'latitude', 'longitude',
+            'price_level', 'tags', 'avg_rating', 'first_photo', 'is_favorited'
+        ]
+
     def get_first_photo(self, obj):
         # Get the first photo of type "photo" for this restaurant
         photo = obj.restaurantfiles_set.filter(type="photo").first()
         if photo:
             return photo.file_url
         return None
+
+    def get_is_favorited(self, obj):
+        """Return True if the current user has favorited this restaurant."""
+        request = self.context.get('request')
+        if not request or request.user.is_anonymous:
+            return False
+        return Favorites.objects.filter(user=request.user, restaurant=obj).exists()
+
 
 
 class RestaurantSchedulesSerializer(serializers.ModelSerializer):
