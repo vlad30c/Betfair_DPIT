@@ -7,6 +7,7 @@ from rest_framework import status
 from rest_framework import generics, permissions
 from .serializers import UserUpdateSerializer
 from rest_framework.permissions import IsAuthenticated
+from django.db.models import Q
 
 class UpdateAuthenticatedUserView(generics.UpdateAPIView):
     serializer_class = UserUpdateSerializer
@@ -98,9 +99,11 @@ def tag_detail_by_category(request, category, id, format=None):
 @api_view(['GET', 'POST'])
 def restaurants(request, format=None):
     """
-    Get all restaurant tags.
-    Serialize them
-    Return as JSON/HTTP response.
+    Get all restaurants with optional filtering:
+    - city (partial, case-insensitive)
+    - search by restaurant name (partial)
+    - multiple tags (AND filtering)
+    - multiple price levels (OR filtering)
     """
     if request.method == 'GET':
         queryset = Restaurants.objects.all()
@@ -115,17 +118,22 @@ def restaurants(request, format=None):
         if search:
             queryset = queryset.filter(name__icontains=search)
         
-        # --- Filter by price level ---
-        price_level = request.GET.get("price_level")
-        if price_level:
-            queryset = queryset.filter(price_level=price_level)
-
-         # --- Filter by tag (cuisine/setting) ---
+        # --- Filter by tag (cuisine/setting) ---
         tag_param = request.GET.get("tags")  # e.g. "Asian,Romantic"
         if tag_param:
             tags = [t.strip() for t in tag_param.split(",") if t.strip()]
             for t in tags:
                 queryset = queryset.filter(tags__name__iexact=t)
+        
+        # --- Filter by price levels (OR filtering for multiple values) ---
+        price_levels_param = request.GET.get("price_level", "")  # e.g. "budget-friendly,expensive"
+        price_levels = [p.strip() for p in price_levels_param.split(",") if p.strip()]
+        if price_levels:
+            q = Q()
+            for p in price_levels:
+                q |= Q(price_level=p)
+            queryset = queryset.filter(q)
+
         """
         # --- Filter by minimum rating ---
         min_rating = request.GET.get("min_rating")
