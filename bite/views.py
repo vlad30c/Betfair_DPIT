@@ -142,7 +142,7 @@ def restaurants(request, format=None):
         """
         
         queryset = queryset.distinct()
-        serializer = RestaurantsSerializer(queryset, many=True)
+        serializer = RestaurantsSerializer(queryset, many=True, context={'request': request})
         return Response({"restaurants": serializer.data})
 
     elif request.method == 'POST':
