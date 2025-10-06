@@ -136,6 +136,9 @@ class RatingsSerializer(serializers.ModelSerializer):
         return obj.user.username
 
 class ReservationsSerializer(serializers.ModelSerializer):
+
+    # Nested serializer for restaurant details (read-only)
+    restaurant_details = RestaurantsSerializer(source='restaurant', read_only=True)
     class Meta:
         model = Reservations
         fields = [
