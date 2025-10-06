@@ -2,6 +2,7 @@ from rest_framework import serializers
 from .models import Tags, Menucategories, Menuitems, Menutypes, RestaurantSchedules, Ratings, Reservations, Restaurants, RestaurantFiles
 from django.contrib.auth.models import User
 from .models import Profile, Favorites
+from datetime import datetime
 
 class ProfileSerializer(serializers.ModelSerializer):
     class Meta:
@@ -78,10 +79,6 @@ class TagsSerializer(serializers.ModelSerializer):
             raise serializers.ValidationError("Invalid category for tag.")
         return super().create(validated_data)
 
-
-from rest_framework import serializers
-from .models import Restaurants, Favorites  # make sure Favorites is imported
-
 class RestaurantsSerializer(serializers.ModelSerializer):
     tags = TagsSerializer(many=True, read_only=True)
     avg_rating = serializers.FloatField(read_only=True)
@@ -137,13 +134,22 @@ class RatingsSerializer(serializers.ModelSerializer):
         if obj.user is None:
             return "Deleted user"
         return obj.user.username
-    
 
 class ReservationsSerializer(serializers.ModelSerializer):
     class Meta:
         model = Reservations
-        fields = ['reservation_id', 'user', 'restaurant', 'reservation_date', 'reservation_time',
-                  'number_of_guests', 'status', 'special_requests', 'booking_timestamp', 'phone_number']
+        fields = [
+            'reservation_id', 'restaurant', 'reservation_date', 'reservation_time',
+            'number_of_guests', 'special_requests', 'phone_number'
+        ]
+        read_only_fields = ['reservation_id']
+
+    def create(self, validated_data):
+        validated_data['user'] = self.context['request'].user
+        return super().create(validated_data)
+
+
+
         
 class FavoritesSerializer(serializers.ModelSerializer):
     restaurant = RestaurantsSerializer(read_only=True)  # nest it here

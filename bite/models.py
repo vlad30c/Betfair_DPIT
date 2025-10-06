@@ -144,9 +144,7 @@ class Reservations(models.Model):
     reservation_date = models.DateField()
     reservation_time = models.TimeField()
     number_of_guests = models.IntegerField()
-    status = models.CharField(max_length=50)
     special_requests = models.TextField(blank=True, null=True)
-    booking_timestamp = models.DateTimeField(blank=True, null=True)
     phone_number = models.CharField(max_length=15, blank=True, null=True)
 
     class Meta:

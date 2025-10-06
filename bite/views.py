@@ -8,6 +8,7 @@ from rest_framework import generics, permissions
 from .serializers import UserUpdateSerializer
 from rest_framework.permissions import IsAuthenticated
 from django.db.models import Q
+from datetime import datetime
 
 class UpdateAuthenticatedUserView(generics.UpdateAPIView):
     serializer_class = UserUpdateSerializer
@@ -333,41 +334,26 @@ def rating_detail(request, id, format=None):
 # ------------------ Reservations ------------------
 
 @api_view(['GET', 'POST'])
-def reservations(request, format=None):
+@permission_classes([IsAuthenticated])
+def reservations(request):
+    # GET → list all of the current user's reservations
     if request.method == 'GET':
-        queryset = Reservations.objects.all()
-        serializer = ReservationsSerializer(queryset, many=True)
-        return Response({"reservations": serializer.data})
+        user_reservations = Reservations.objects.filter(user=request.user).order_by('-reservation_date', '-reservation_time')
+        serializer = ReservationsSerializer(user_reservations, many=True)
+        return Response({"reservations": serializer.data}, status=status.HTTP_200_OK)
 
+    # POST → create a new reservation
     elif request.method == 'POST':
-        serializer = ReservationsSerializer(data=request.data)
+        serializer = ReservationsSerializer(data=request.data, context={'request': request})
         if serializer.is_valid():
-            serializer.save()
-            return Response(serializer.data, status=status.HTTP_201_CREATED)
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+            reservation = serializer.save()
+            return Response({
+                "success": True,
+                "message": "Reservation created successfully.",
+                "reservation": ReservationsSerializer(reservation).data
+            }, status=status.HTTP_201_CREATED)
+        return Response({"success": False, "errors": serializer.errors}, status=status.HTTP_400_BAD_REQUEST)
 
-
-@api_view(['GET', 'PUT', 'DELETE'])
-def reservation_detail(request, id, format=None):
-    try:
-        reservation = Reservations.objects.get(pk=id)
-    except Reservations.DoesNotExist:
-        return Response(status=status.HTTP_404_NOT_FOUND)
-
-    if request.method == 'GET':
-        serializer = ReservationsSerializer(reservation)
-        return Response(serializer.data)
-
-    elif request.method == 'PUT':
-        serializer = ReservationsSerializer(reservation, data=request.data)
-        if serializer.is_valid():
-            serializer.save()
-            return Response(serializer.data)
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-
-    elif request.method == 'DELETE':
-        reservation.delete()
-        return Response(status=status.HTTP_204_NO_CONTENT)
     
 # ------------------ Favorites ------------------
 

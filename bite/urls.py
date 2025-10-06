@@ -24,7 +24,10 @@ urlpatterns = [
     path('api/me/update/', UpdateAuthenticatedUserView.as_view(), name='update-user'),
     path('api/users/me/', get_current_user, name='get-current-user'),
 
-    # Favorites endpoint
+    # Reservation endpoint
+    path('reservations/', views.reservations, name='reservations'),
+
+    # Favorites endpoints
     path('favorites/toggle/', toggle_favorite, name='favorites-toggle'),
     path('favorites/', favorites_list, name='favorites-list'),
 ]
