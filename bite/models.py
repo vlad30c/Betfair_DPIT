@@ -146,6 +146,7 @@ class Reservations(models.Model):
     number_of_guests = models.IntegerField()
     special_requests = models.TextField(blank=True, null=True)
     phone_number = models.CharField(max_length=15, blank=True, null=True)
+    full_name = models.CharField(max_length=100)
 
     class Meta:
         db_table = 'Reservations'

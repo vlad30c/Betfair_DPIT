@@ -140,7 +140,7 @@ class ReservationsSerializer(serializers.ModelSerializer):
         model = Reservations
         fields = [
             'reservation_id', 'restaurant', 'reservation_date', 'reservation_time',
-            'number_of_guests', 'special_requests', 'phone_number'
+            'number_of_guests', 'special_requests', 'phone_number', 'full_name'
         ]
         read_only_fields = ['reservation_id']
 
