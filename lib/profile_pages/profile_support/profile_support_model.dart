@@ -13,6 +13,9 @@ class ProfileSupportModel extends FlutterFlowModel<ProfileSupportWidget> {
   FocusNode? textFieldFocusNode2;
   TextEditingController? textController2;
   String? Function(BuildContext, String?)? textController2Validator;
+  bool isDataUploading_uploadScreenshotBug = false;
+  FFUploadedFile uploadedLocalFile_uploadScreenshotBug =
+      FFUploadedFile(bytes: Uint8List.fromList([]));
 
   @override
   void initState(BuildContext context) {}

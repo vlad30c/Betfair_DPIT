@@ -1,9 +1,9 @@
 import '/flutter_flow/flutter_flow_util.dart';
 import '/index.dart';
-import 'categories_widget.dart' show CategoriesWidget;
+import 'booking_complete_widget.dart' show BookingCompleteWidget;
 import 'package:flutter/material.dart';
 
-class CategoriesModel extends FlutterFlowModel<CategoriesWidget> {
+class BookingCompleteModel extends FlutterFlowModel<BookingCompleteWidget> {
   @override
   void initState(BuildContext context) {}
 

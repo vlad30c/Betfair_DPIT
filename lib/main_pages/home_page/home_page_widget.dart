@@ -1,3 +1,4 @@
+import '/backend/api_requests/api_calls.dart';
 import '/flutter_flow/flutter_flow_icon_button.dart';
 import '/flutter_flow/flutter_flow_theme.dart';
 import '/flutter_flow/flutter_flow_util.dart';
@@ -6,6 +7,7 @@ import '/index.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:provider/provider.dart';
 import 'home_page_model.dart';
 export 'home_page_model.dart';
 
@@ -39,6 +41,8 @@ class _HomePageWidgetState extends State<HomePageWidget> {
 
   @override
   Widget build(BuildContext context) {
+    context.watch<FFAppState>();
+
     return GestureDetector(
       onTap: () {
         FocusScope.of(context).unfocus();
@@ -56,7 +60,7 @@ class _HomePageWidgetState extends State<HomePageWidget> {
                   alignment: AlignmentDirectional(0.0, 0.0),
                   child: Padding(
                     padding:
-                        EdgeInsetsDirectional.fromSTEB(10.0, 0.0, 0.0, 10.0),
+                        EdgeInsetsDirectional.fromSTEB(10.0, 10.0, 0.0, 10.0),
                     child: InkWell(
                       splashColor: Colors.transparent,
                       focusColor: Colors.transparent,
@@ -93,7 +97,7 @@ class _HomePageWidgetState extends State<HomePageWidget> {
                               size: 30.0,
                             ),
                             Text(
-                              'Cluj-Napoca, Centru',
+                              FFAppState().selectedCity,
                               style: FlutterFlowTheme.of(context)
                                   .bodyMedium
                                   .override(
@@ -225,7 +229,7 @@ class _HomePageWidgetState extends State<HomePageWidget> {
                   padding: EdgeInsetsDirectional.fromSTEB(0.0, 0.0, 0.0, 20.0),
                   child: Container(
                     width: double.infinity,
-                    height: 120.0,
+                    height: 125.0,
                     decoration: BoxDecoration(),
                     child: ListView(
                       padding: EdgeInsets.zero,
@@ -236,24 +240,27 @@ class _HomePageWidgetState extends State<HomePageWidget> {
                         Padding(
                           padding: EdgeInsetsDirectional.fromSTEB(
                               10.0, 0.0, 0.0, 0.0),
-                          child: Container(
-                            width: 100.0,
-                            decoration: BoxDecoration(
-                              color: Color(0x00FFFFFF),
-                            ),
-                            child: Column(
-                              mainAxisSize: MainAxisSize.max,
-                              children: [
-                                InkWell(
-                                  splashColor: Colors.transparent,
-                                  focusColor: Colors.transparent,
-                                  hoverColor: Colors.transparent,
-                                  highlightColor: Colors.transparent,
-                                  onTap: () async {
-                                    context
-                                        .pushNamed(CategoriesWidget.routeName);
-                                  },
-                                  child: Container(
+                          child: InkWell(
+                            splashColor: Colors.transparent,
+                            focusColor: Colors.transparent,
+                            hoverColor: Colors.transparent,
+                            highlightColor: Colors.transparent,
+                            onTap: () async {
+                              FFAppState().selectedCuisines =
+                                  ['Mediterranean'].toList().cast<String>();
+                              safeSetState(() {});
+
+                              context.pushNamed(SearchPageWidget.routeName);
+                            },
+                            child: Container(
+                              width: 100.0,
+                              decoration: BoxDecoration(
+                                color: Color(0x00FFFFFF),
+                              ),
+                              child: Column(
+                                mainAxisSize: MainAxisSize.max,
+                                children: [
+                                  Container(
                                     width: 100.0,
                                     height: 100.0,
                                     clipBehavior: Clip.antiAlias,
@@ -265,9 +272,64 @@ class _HomePageWidgetState extends State<HomePageWidget> {
                                       fit: BoxFit.cover,
                                     ),
                                   ),
+                                  Text(
+                                    'Mediterranean',
+                                    style: FlutterFlowTheme.of(context)
+                                        .bodyMedium
+                                        .override(
+                                          fontFamily:
+                                              FlutterFlowTheme.of(context)
+                                                  .bodyMediumFamily,
+                                          color: Colors.black,
+                                          letterSpacing: 0.0,
+                                          useGoogleFonts:
+                                              !FlutterFlowTheme.of(context)
+                                                  .bodyMediumIsCustom,
+                                        ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ),
+                        ),
+                        InkWell(
+                          splashColor: Colors.transparent,
+                          focusColor: Colors.transparent,
+                          hoverColor: Colors.transparent,
+                          highlightColor: Colors.transparent,
+                          onTap: () async {
+                            FFAppState().selectedCuisines =
+                                ['Italian'].toList().cast<String>();
+                            safeSetState(() {});
+
+                            context.pushNamed(SearchPageWidget.routeName);
+                          },
+                          child: Container(
+                            width: 100.0,
+                            decoration: BoxDecoration(
+                              color: Color(0x00FFFFFF),
+                            ),
+                            child: Column(
+                              mainAxisSize: MainAxisSize.max,
+                              children: [
+                                Padding(
+                                  padding: EdgeInsetsDirectional.fromSTEB(
+                                      0.0, 0.0, 7.0, 0.0),
+                                  child: Container(
+                                    width: 100.0,
+                                    height: 100.0,
+                                    clipBehavior: Clip.antiAlias,
+                                    decoration: BoxDecoration(
+                                      shape: BoxShape.circle,
+                                    ),
+                                    child: Image.asset(
+                                      'assets/images/pizza.png',
+                                      fit: BoxFit.cover,
+                                    ),
+                                  ),
                                 ),
                                 Text(
-                                  'Mediterranean',
+                                  'Itailan',
                                   style: FlutterFlowTheme.of(context)
                                       .bodyMedium
                                       .override(
@@ -284,18 +346,27 @@ class _HomePageWidgetState extends State<HomePageWidget> {
                             ),
                           ),
                         ),
-                        Container(
-                          width: 100.0,
-                          decoration: BoxDecoration(
-                            color: Color(0x00FFFFFF),
-                          ),
-                          child: Column(
-                            mainAxisSize: MainAxisSize.max,
-                            children: [
-                              Padding(
-                                padding: EdgeInsetsDirectional.fromSTEB(
-                                    0.0, 0.0, 7.0, 0.0),
-                                child: Container(
+                        InkWell(
+                          splashColor: Colors.transparent,
+                          focusColor: Colors.transparent,
+                          hoverColor: Colors.transparent,
+                          highlightColor: Colors.transparent,
+                          onTap: () async {
+                            FFAppState().selectedCuisines =
+                                ['Romanian'].toList().cast<String>();
+                            safeSetState(() {});
+
+                            context.pushNamed(SearchPageWidget.routeName);
+                          },
+                          child: Container(
+                            width: 100.0,
+                            decoration: BoxDecoration(
+                              color: Color(0x00FFFFFF),
+                            ),
+                            child: Column(
+                              mainAxisSize: MainAxisSize.max,
+                              children: [
+                                Container(
                                   width: 100.0,
                                   height: 100.0,
                                   clipBehavior: Clip.antiAlias,
@@ -303,137 +374,76 @@ class _HomePageWidgetState extends State<HomePageWidget> {
                                     shape: BoxShape.circle,
                                   ),
                                   child: Image.asset(
-                                    'assets/images/pizza.png',
+                                    'assets/images/romanian.png',
                                     fit: BoxFit.cover,
                                   ),
                                 ),
-                              ),
-                              Text(
-                                'Pizza\n',
-                                style: FlutterFlowTheme.of(context)
-                                    .bodyMedium
-                                    .override(
-                                      fontFamily: FlutterFlowTheme.of(context)
-                                          .bodyMediumFamily,
-                                      color: Colors.black,
-                                      letterSpacing: 0.0,
-                                      useGoogleFonts:
-                                          !FlutterFlowTheme.of(context)
-                                              .bodyMediumIsCustom,
-                                    ),
-                              ),
-                            ],
+                                Text(
+                                  'Romanian',
+                                  style: FlutterFlowTheme.of(context)
+                                      .bodyMedium
+                                      .override(
+                                        fontFamily: FlutterFlowTheme.of(context)
+                                            .bodyMediumFamily,
+                                        color: Colors.black,
+                                        letterSpacing: 0.0,
+                                        useGoogleFonts:
+                                            !FlutterFlowTheme.of(context)
+                                                .bodyMediumIsCustom,
+                                      ),
+                                ),
+                              ],
+                            ),
                           ),
                         ),
-                        Container(
-                          width: 100.0,
-                          decoration: BoxDecoration(
-                            color: Color(0x00FFFFFF),
-                          ),
-                          child: Column(
-                            mainAxisSize: MainAxisSize.max,
-                            children: [
-                              Container(
-                                width: 100.0,
-                                height: 100.0,
-                                clipBehavior: Clip.antiAlias,
-                                decoration: BoxDecoration(
-                                  shape: BoxShape.circle,
+                        InkWell(
+                          splashColor: Colors.transparent,
+                          focusColor: Colors.transparent,
+                          hoverColor: Colors.transparent,
+                          highlightColor: Colors.transparent,
+                          onTap: () async {
+                            FFAppState().selectedCuisines =
+                                ['Asian'].toList().cast<String>();
+                            safeSetState(() {});
+
+                            context.pushNamed(SearchPageWidget.routeName);
+                          },
+                          child: Container(
+                            width: 100.0,
+                            decoration: BoxDecoration(
+                              color: Color(0x00FFFFFF),
+                            ),
+                            child: Column(
+                              mainAxisSize: MainAxisSize.max,
+                              children: [
+                                Container(
+                                  width: 100.0,
+                                  height: 100.0,
+                                  clipBehavior: Clip.antiAlias,
+                                  decoration: BoxDecoration(
+                                    shape: BoxShape.circle,
+                                  ),
+                                  child: Image.asset(
+                                    'assets/images/asian.png',
+                                    fit: BoxFit.cover,
+                                  ),
                                 ),
-                                child: Image.asset(
-                                  'assets/images/romanian.png',
-                                  fit: BoxFit.cover,
+                                Text(
+                                  'Asian',
+                                  style: FlutterFlowTheme.of(context)
+                                      .bodyMedium
+                                      .override(
+                                        fontFamily: FlutterFlowTheme.of(context)
+                                            .bodyMediumFamily,
+                                        color: Colors.black,
+                                        letterSpacing: 0.0,
+                                        useGoogleFonts:
+                                            !FlutterFlowTheme.of(context)
+                                                .bodyMediumIsCustom,
+                                      ),
                                 ),
-                              ),
-                              Text(
-                                'Romanian',
-                                style: FlutterFlowTheme.of(context)
-                                    .bodyMedium
-                                    .override(
-                                      fontFamily: FlutterFlowTheme.of(context)
-                                          .bodyMediumFamily,
-                                      color: Colors.black,
-                                      letterSpacing: 0.0,
-                                      useGoogleFonts:
-                                          !FlutterFlowTheme.of(context)
-                                              .bodyMediumIsCustom,
-                                    ),
-                              ),
-                            ],
-                          ),
-                        ),
-                        Container(
-                          width: 100.0,
-                          decoration: BoxDecoration(
-                            color: Color(0x00FFFFFF),
-                          ),
-                          child: Column(
-                            mainAxisSize: MainAxisSize.max,
-                            children: [
-                              Container(
-                                width: 100.0,
-                                height: 100.0,
-                                clipBehavior: Clip.antiAlias,
-                                decoration: BoxDecoration(
-                                  shape: BoxShape.circle,
-                                ),
-                                child: Image.asset(
-                                  'assets/images/sushi.png',
-                                  fit: BoxFit.cover,
-                                ),
-                              ),
-                              Text(
-                                'Sushi',
-                                style: FlutterFlowTheme.of(context)
-                                    .bodyMedium
-                                    .override(
-                                      fontFamily: FlutterFlowTheme.of(context)
-                                          .bodyMediumFamily,
-                                      color: Color(0xFF060008),
-                                      letterSpacing: 0.0,
-                                      useGoogleFonts:
-                                          !FlutterFlowTheme.of(context)
-                                              .bodyMediumIsCustom,
-                                    ),
-                              ),
-                            ],
-                          ),
-                        ),
-                        Container(
-                          width: 100.0,
-                          decoration: BoxDecoration(
-                            color: Color(0x00FFFFFF),
-                          ),
-                          child: Column(
-                            mainAxisSize: MainAxisSize.max,
-                            children: [
-                              Container(
-                                width: 100.0,
-                                height: 100.0,
-                                clipBehavior: Clip.antiAlias,
-                                decoration: BoxDecoration(
-                                  shape: BoxShape.circle,
-                                ),
-                                child: Image.asset(
-                                  'assets/images/asian.png',
-                                  fit: BoxFit.cover,
-                                ),
-                              ),
-                              Text(
-                                'Asian',
-                                style: FlutterFlowTheme.of(context)
-                                    .bodyMedium
-                                    .override(
-                                      fontFamily: FlutterFlowTheme.of(context)
-                                          .bodyMediumFamily,
-                                      color: Colors.black,
-                                      letterSpacing: 0.0,
-                                      useGoogleFonts:
-                                          !FlutterFlowTheme.of(context)
-                                              .bodyMediumIsCustom,
-                                    ),
-                              ),
-                            ],
+                              ],
+                            ),
                           ),
                         ),
                       ].divide(SizedBox(width: 10.0)),
@@ -502,71 +512,6 @@ class _HomePageWidgetState extends State<HomePageWidget> {
                                       height: 230.0,
                                       fit: BoxFit.cover,
                                     ),
-                                  ),
-                                ),
-                                Align(
-                                  alignment: AlignmentDirectional(0.0, 0.0),
-                                  child: Stack(
-                                    children: [
-                                      Align(
-                                        alignment:
-                                            AlignmentDirectional(-0.99, 0.0),
-                                        child: Column(
-                                          mainAxisSize: MainAxisSize.max,
-                                          children: [
-                                            Container(
-                                              width: 144.1,
-                                              height: 229.0,
-                                              decoration: BoxDecoration(
-                                                color: Color(0x00D7B2E6),
-                                              ),
-                                              child: Row(
-                                                mainAxisSize: MainAxisSize.max,
-                                                mainAxisAlignment:
-                                                    MainAxisAlignment.center,
-                                                crossAxisAlignment:
-                                                    CrossAxisAlignment.center,
-                                                children: [
-                                                  Text(
-                                                    '     25%\n Reducere',
-                                                    style: FlutterFlowTheme.of(
-                                                            context)
-                                                        .headlineSmall
-                                                        .override(
-                                                          font: GoogleFonts
-                                                              .patrickHand(
-                                                            fontWeight:
-                                                                FlutterFlowTheme.of(
-                                                                        context)
-                                                                    .headlineSmall
-                                                                    .fontWeight,
-                                                            fontStyle:
-                                                                FlutterFlowTheme.of(
-                                                                        context)
-                                                                    .headlineSmall
-                                                                    .fontStyle,
-                                                          ),
-                                                          fontSize: 35.0,
-                                                          letterSpacing: 0.0,
-                                                          fontWeight:
-                                                              FlutterFlowTheme.of(
-                                                                      context)
-                                                                  .headlineSmall
-                                                                  .fontWeight,
-                                                          fontStyle:
-                                                              FlutterFlowTheme.of(
-                                                                      context)
-                                                                  .headlineSmall
-                                                                  .fontStyle,
-                                                        ),
-                                                  ),
-                                                ],
-                                              ),
-                                            ),
-                                          ],
-                                        ),
-                                      ),
-                                    ],
                                   ),
                                 ),
                               ],
@@ -815,220 +760,6 @@ class _HomePageWidgetState extends State<HomePageWidget> {
                     padding:
                         EdgeInsetsDirectional.fromSTEB(10.0, 0.0, 0.0, 10.0),
                     child: Text(
-                      'Recently viewed',
-                      style: FlutterFlowTheme.of(context).bodyMedium.override(
-                            fontFamily:
-                                FlutterFlowTheme.of(context).bodyMediumFamily,
-                            color: Colors.black,
-                            fontSize: 15.0,
-                            letterSpacing: 0.0,
-                            fontWeight: FontWeight.w900,
-                            useGoogleFonts: !FlutterFlowTheme.of(context)
-                                .bodyMediumIsCustom,
-                          ),
-                    ),
-                  ),
-                ),
-                Padding(
-                  padding: EdgeInsetsDirectional.fromSTEB(0.0, 0.0, 0.0, 20.0),
-                  child: Container(
-                    width: double.infinity,
-                    height: 120.0,
-                    decoration: BoxDecoration(),
-                    child: ListView(
-                      padding: EdgeInsets.zero,
-                      primary: false,
-                      shrinkWrap: true,
-                      scrollDirection: Axis.horizontal,
-                      children: [
-                        Padding(
-                          padding: EdgeInsetsDirectional.fromSTEB(
-                              10.0, 0.0, 0.0, 0.0),
-                          child: Container(
-                            width: 210.0,
-                            decoration: BoxDecoration(
-                              color: Color(0x00FFFFFF),
-                            ),
-                            child: Column(
-                              mainAxisSize: MainAxisSize.max,
-                              children: [
-                                InkWell(
-                                  splashColor: Colors.transparent,
-                                  focusColor: Colors.transparent,
-                                  hoverColor: Colors.transparent,
-                                  highlightColor: Colors.transparent,
-                                  onTap: () async {
-                                    context.pushNamed(
-                                        RestaurantInterfaceMenuWidget
-                                            .routeName);
-                                  },
-                                  child: ClipRRect(
-                                    borderRadius: BorderRadius.circular(8.0),
-                                    child: Image.network(
-                                      'https://picsum.photos/seed/283/600',
-                                      width: 210.0,
-                                      height: 105.0,
-                                      fit: BoxFit.cover,
-                                    ),
-                                  ),
-                                ),
-                                Row(
-                                  mainAxisSize: MainAxisSize.max,
-                                  children: [
-                                    Align(
-                                      alignment:
-                                          AlignmentDirectional(-1.0, 0.0),
-                                      child: Padding(
-                                        padding: EdgeInsetsDirectional.fromSTEB(
-                                            0.0, 0.0, 80.0, 0.0),
-                                        child: Text(
-                                          'Cimbru',
-                                          style: FlutterFlowTheme.of(context)
-                                              .bodyMedium
-                                              .override(
-                                                fontFamily:
-                                                    FlutterFlowTheme.of(context)
-                                                        .bodyMediumFamily,
-                                                color: Colors.black,
-                                                letterSpacing: 0.0,
-                                                fontWeight: FontWeight.bold,
-                                                useGoogleFonts:
-                                                    !FlutterFlowTheme.of(
-                                                            context)
-                                                        .bodyMediumIsCustom,
-                                              ),
-                                        ),
-                                      ),
-                                    ),
-                                    Icon(
-                                      Icons.directions_walk,
-                                      color: Colors.black,
-                                      size: 14.0,
-                                    ),
-                                    Align(
-                                      alignment: AlignmentDirectional(1.0, 0.0),
-                                      child: Text(
-                                        '30-35min',
-                                        style: FlutterFlowTheme.of(context)
-                                            .bodyMedium
-                                            .override(
-                                              fontFamily:
-                                                  FlutterFlowTheme.of(context)
-                                                      .bodyMediumFamily,
-                                              color: Colors.black,
-                                              letterSpacing: 0.0,
-                                              fontWeight: FontWeight.bold,
-                                              useGoogleFonts:
-                                                  !FlutterFlowTheme.of(context)
-                                                      .bodyMediumIsCustom,
-                                            ),
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              ],
-                            ),
-                          ),
-                        ),
-                        Padding(
-                          padding: EdgeInsetsDirectional.fromSTEB(
-                              5.0, 0.0, 0.0, 0.0),
-                          child: Container(
-                            width: 210.0,
-                            decoration: BoxDecoration(
-                              color: Color(0x00FFFFFF),
-                            ),
-                            child: Column(
-                              mainAxisSize: MainAxisSize.max,
-                              children: [
-                                InkWell(
-                                  splashColor: Colors.transparent,
-                                  focusColor: Colors.transparent,
-                                  hoverColor: Colors.transparent,
-                                  highlightColor: Colors.transparent,
-                                  onTap: () async {
-                                    context.pushNamed(
-                                        RestaurantInterfaceMenuWidget
-                                            .routeName);
-                                  },
-                                  child: ClipRRect(
-                                    borderRadius: BorderRadius.circular(8.0),
-                                    child: Image.network(
-                                      'https://picsum.photos/seed/294/600',
-                                      width: 210.0,
-                                      height: 105.0,
-                                      fit: BoxFit.cover,
-                                    ),
-                                  ),
-                                ),
-                                Row(
-                                  mainAxisSize: MainAxisSize.max,
-                                  children: [
-                                    Align(
-                                      alignment:
-                                          AlignmentDirectional(-1.0, 0.0),
-                                      child: Padding(
-                                        padding: EdgeInsetsDirectional.fromSTEB(
-                                            0.0, 0.0, 80.0, 0.0),
-                                        child: Text(
-                                          'Cimbru',
-                                          style: FlutterFlowTheme.of(context)
-                                              .bodyMedium
-                                              .override(
-                                                fontFamily:
-                                                    FlutterFlowTheme.of(context)
-                                                        .bodyMediumFamily,
-                                                color: Colors.black,
-                                                letterSpacing: 0.0,
-                                                fontWeight: FontWeight.bold,
-                                                useGoogleFonts:
-                                                    !FlutterFlowTheme.of(
-                                                            context)
-                                                        .bodyMediumIsCustom,
-                                              ),
-                                        ),
-                                      ),
-                                    ),
-                                    Icon(
-                                      Icons.directions_walk,
-                                      color: Colors.black,
-                                      size: 14.0,
-                                    ),
-                                    Align(
-                                      alignment: AlignmentDirectional(1.0, 0.0),
-                                      child: Text(
-                                        '30-35min',
-                                        style: FlutterFlowTheme.of(context)
-                                            .bodyMedium
-                                            .override(
-                                              fontFamily:
-                                                  FlutterFlowTheme.of(context)
-                                                      .bodyMediumFamily,
-                                              color: Colors.black,
-                                              letterSpacing: 0.0,
-                                              fontWeight: FontWeight.bold,
-                                              useGoogleFonts:
-                                                  !FlutterFlowTheme.of(context)
-                                                      .bodyMediumIsCustom,
-                                            ),
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              ],
-                            ),
-                          ),
-                        ),
-                      ].divide(SizedBox(width: 10.0)),
-                    ),
-                  ),
-                ),
-                Align(
-                  alignment: AlignmentDirectional(-1.0, 0.0),
-                  child: Padding(
-                    padding:
-                        EdgeInsetsDirectional.fromSTEB(10.0, 0.0, 0.0, 10.0),
-                    child: Text(
                       'Most Popular',
                       style: FlutterFlowTheme.of(context).bodyMedium.override(
                             fontFamily:
@@ -1044,196 +775,416 @@ class _HomePageWidgetState extends State<HomePageWidget> {
                   ),
                 ),
                 Padding(
-                  padding: EdgeInsetsDirectional.fromSTEB(0.0, 0.0, 0.0, 20.0),
+                  padding: EdgeInsetsDirectional.fromSTEB(0.0, 0.0, 0.0, 10.0),
                   child: Container(
                     width: double.infinity,
-                    height: 120.0,
+                    height: 130.0,
                     decoration: BoxDecoration(),
-                    child: ListView(
-                      padding: EdgeInsets.zero,
-                      primary: false,
-                      shrinkWrap: true,
-                      scrollDirection: Axis.horizontal,
-                      children: [
-                        Padding(
-                          padding: EdgeInsetsDirectional.fromSTEB(
-                              10.0, 0.0, 0.0, 0.0),
-                          child: Container(
-                            width: 210.0,
-                            decoration: BoxDecoration(
-                              color: Color(0x00FFFFFF),
+                    child: FutureBuilder<ApiCallResponse>(
+                      future:
+                          RestaurantGroup.getFilteredRestaurantListCall.call(
+                        city: FFAppState().selectedCity,
+                        authToken: FFAppState().token,
+                      ),
+                      builder: (context, snapshot) {
+                        // Customize what your widget looks like when it's loading.
+                        if (!snapshot.hasData) {
+                          return Center(
+                            child: SizedBox(
+                              width: 50.0,
+                              height: 50.0,
+                              child: CircularProgressIndicator(
+                                valueColor: AlwaysStoppedAnimation<Color>(
+                                  FlutterFlowTheme.of(context).primary,
+                                ),
+                              ),
                             ),
-                            child: Column(
-                              mainAxisSize: MainAxisSize.max,
-                              children: [
-                                InkWell(
-                                  splashColor: Colors.transparent,
-                                  focusColor: Colors.transparent,
-                                  hoverColor: Colors.transparent,
-                                  highlightColor: Colors.transparent,
-                                  onTap: () async {
-                                    context.pushNamed(
-                                        RestaurantInterfaceMenuWidget
-                                            .routeName);
-                                  },
-                                  child: ClipRRect(
-                                    borderRadius: BorderRadius.circular(8.0),
-                                    child: Image.network(
-                                      'https://picsum.photos/seed/295/600',
+                          );
+                        }
+                        final listViewGetFilteredRestaurantListResponse =
+                            snapshot.data!;
+
+                        return Builder(
+                          builder: (context) {
+                            final restaurantList = getJsonField(
+                              listViewGetFilteredRestaurantListResponse
+                                  .jsonBody,
+                              r'''$.restaurants''',
+                            ).toList();
+
+                            return ListView.separated(
+                              padding: EdgeInsets.zero,
+                              primary: false,
+                              scrollDirection: Axis.horizontal,
+                              itemCount: restaurantList.length,
+                              separatorBuilder: (_, __) =>
+                                  SizedBox(width: 10.0),
+                              itemBuilder: (context, restaurantListIndex) {
+                                final restaurantListItem =
+                                    restaurantList[restaurantListIndex];
+                                return Padding(
+                                  padding: EdgeInsetsDirectional.fromSTEB(
+                                      10.0, 0.0, 0.0, 0.0),
+                                  child: InkWell(
+                                    splashColor: Colors.transparent,
+                                    focusColor: Colors.transparent,
+                                    hoverColor: Colors.transparent,
+                                    highlightColor: Colors.transparent,
+                                    onTap: () async {
+                                      context.pushNamed(
+                                          RestaurantInterfaceAWidget.routeName);
+                                    },
+                                    child: Container(
                                       width: 210.0,
-                                      height: 105.0,
-                                      fit: BoxFit.cover,
+                                      height: double.infinity,
+                                      decoration: BoxDecoration(
+                                        color: Color(0x00FFFFFF),
+                                      ),
+                                      child: Column(
+                                        mainAxisSize: MainAxisSize.max,
+                                        children: [
+                                          ClipRRect(
+                                            borderRadius:
+                                                BorderRadius.circular(8.0),
+                                            child: Image.network(
+                                              getJsonField(
+                                                restaurantListItem,
+                                                r'''$.first_photo''',
+                                              ).toString(),
+                                              width: 210.0,
+                                              height: 105.0,
+                                              fit: BoxFit.cover,
+                                            ),
+                                          ),
+                                          Align(
+                                            alignment:
+                                                AlignmentDirectional(-1.0, 0.0),
+                                            child: Text(
+                                              getJsonField(
+                                                restaurantListItem,
+                                                r'''$.name''',
+                                              ).toString().maybeHandleOverflow(
+                                                    maxChars: 25,
+                                                    replacement: '…',
+                                                  ),
+                                              style: FlutterFlowTheme.of(
+                                                      context)
+                                                  .bodyMedium
+                                                  .override(
+                                                    fontFamily:
+                                                        FlutterFlowTheme.of(
+                                                                context)
+                                                            .bodyMediumFamily,
+                                                    color: Colors.black,
+                                                    letterSpacing: 0.0,
+                                                    fontWeight: FontWeight.bold,
+                                                    useGoogleFonts:
+                                                        !FlutterFlowTheme.of(
+                                                                context)
+                                                            .bodyMediumIsCustom,
+                                                  ),
+                                            ),
+                                          ),
+                                        ],
+                                      ),
                                     ),
                                   ),
-                                ),
-                                Row(
-                                  mainAxisSize: MainAxisSize.max,
-                                  children: [
-                                    Align(
-                                      alignment:
-                                          AlignmentDirectional(-1.0, 0.0),
-                                      child: Padding(
-                                        padding: EdgeInsetsDirectional.fromSTEB(
-                                            0.0, 0.0, 80.0, 0.0),
-                                        child: Text(
-                                          'Cimbru',
-                                          style: FlutterFlowTheme.of(context)
-                                              .bodyMedium
-                                              .override(
-                                                fontFamily:
-                                                    FlutterFlowTheme.of(context)
-                                                        .bodyMediumFamily,
-                                                color: Colors.black,
-                                                letterSpacing: 0.0,
-                                                fontWeight: FontWeight.bold,
-                                                useGoogleFonts:
-                                                    !FlutterFlowTheme.of(
-                                                            context)
-                                                        .bodyMediumIsCustom,
-                                              ),
-                                        ),
-                                      ),
-                                    ),
-                                    Icon(
-                                      Icons.directions_walk,
-                                      color: Colors.black,
-                                      size: 14.0,
-                                    ),
-                                    Align(
-                                      alignment: AlignmentDirectional(1.0, 0.0),
-                                      child: Text(
-                                        '30-35min',
-                                        style: FlutterFlowTheme.of(context)
-                                            .bodyMedium
-                                            .override(
-                                              fontFamily:
-                                                  FlutterFlowTheme.of(context)
-                                                      .bodyMediumFamily,
-                                              color: Colors.black,
-                                              letterSpacing: 0.0,
-                                              fontWeight: FontWeight.bold,
-                                              useGoogleFonts:
-                                                  !FlutterFlowTheme.of(context)
-                                                      .bodyMediumIsCustom,
-                                            ),
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              ],
-                            ),
+                                );
+                              },
+                            );
+                          },
+                        );
+                      },
+                    ),
+                  ),
+                ),
+                Align(
+                  alignment: AlignmentDirectional(-1.0, 0.0),
+                  child: Padding(
+                    padding:
+                        EdgeInsetsDirectional.fromSTEB(10.0, 0.0, 0.0, 10.0),
+                    child: Text(
+                      'Romantic dining',
+                      style: FlutterFlowTheme.of(context).bodyMedium.override(
+                            fontFamily:
+                                FlutterFlowTheme.of(context).bodyMediumFamily,
+                            color: Colors.black,
+                            fontSize: 15.0,
+                            letterSpacing: 0.0,
+                            fontWeight: FontWeight.w900,
+                            useGoogleFonts: !FlutterFlowTheme.of(context)
+                                .bodyMediumIsCustom,
                           ),
-                        ),
-                        Padding(
-                          padding: EdgeInsetsDirectional.fromSTEB(
-                              10.0, 0.0, 0.0, 0.0),
-                          child: Container(
-                            width: 210.0,
-                            decoration: BoxDecoration(
-                              color: Color(0x00FFFFFF),
+                    ),
+                  ),
+                ),
+                Padding(
+                  padding: EdgeInsetsDirectional.fromSTEB(0.0, 0.0, 0.0, 15.0),
+                  child: Container(
+                    width: double.infinity,
+                    height: 130.0,
+                    decoration: BoxDecoration(),
+                    child: FutureBuilder<ApiCallResponse>(
+                      future:
+                          RestaurantGroup.getFilteredRestaurantListCall.call(
+                        tags: 'Romantic',
+                        city: FFAppState().selectedCity,
+                        authToken: FFAppState().token,
+                      ),
+                      builder: (context, snapshot) {
+                        // Customize what your widget looks like when it's loading.
+                        if (!snapshot.hasData) {
+                          return Center(
+                            child: SizedBox(
+                              width: 50.0,
+                              height: 50.0,
+                              child: CircularProgressIndicator(
+                                valueColor: AlwaysStoppedAnimation<Color>(
+                                  FlutterFlowTheme.of(context).primary,
+                                ),
+                              ),
                             ),
-                            child: Column(
-                              mainAxisSize: MainAxisSize.max,
-                              children: [
-                                InkWell(
-                                  splashColor: Colors.transparent,
-                                  focusColor: Colors.transparent,
-                                  hoverColor: Colors.transparent,
-                                  highlightColor: Colors.transparent,
-                                  onTap: () async {
-                                    context.pushNamed(
-                                        RestaurantInterfaceMenuWidget
-                                            .routeName);
-                                  },
-                                  child: ClipRRect(
-                                    borderRadius: BorderRadius.circular(8.0),
-                                    child: Image.network(
-                                      'https://picsum.photos/seed/283/600',
+                          );
+                        }
+                        final listViewGetFilteredRestaurantListResponse =
+                            snapshot.data!;
+
+                        return Builder(
+                          builder: (context) {
+                            final restauranList = getJsonField(
+                              listViewGetFilteredRestaurantListResponse
+                                  .jsonBody,
+                              r'''$.restaurants''',
+                            ).toList();
+
+                            return ListView.separated(
+                              padding: EdgeInsets.zero,
+                              primary: false,
+                              scrollDirection: Axis.horizontal,
+                              itemCount: restauranList.length,
+                              separatorBuilder: (_, __) =>
+                                  SizedBox(width: 10.0),
+                              itemBuilder: (context, restauranListIndex) {
+                                final restauranListItem =
+                                    restauranList[restauranListIndex];
+                                return Padding(
+                                  padding: EdgeInsetsDirectional.fromSTEB(
+                                      10.0, 0.0, 0.0, 0.0),
+                                  child: InkWell(
+                                    splashColor: Colors.transparent,
+                                    focusColor: Colors.transparent,
+                                    hoverColor: Colors.transparent,
+                                    highlightColor: Colors.transparent,
+                                    onTap: () async {
+                                      context.pushNamed(
+                                          RestaurantInterfaceAWidget.routeName);
+                                    },
+                                    child: Container(
                                       width: 210.0,
-                                      height: 105.0,
-                                      fit: BoxFit.cover,
+                                      height: double.infinity,
+                                      decoration: BoxDecoration(
+                                        color: Color(0x00FFFFFF),
+                                      ),
+                                      child: Column(
+                                        mainAxisSize: MainAxisSize.max,
+                                        children: [
+                                          ClipRRect(
+                                            borderRadius:
+                                                BorderRadius.circular(8.0),
+                                            child: Image.network(
+                                              getJsonField(
+                                                restauranListItem,
+                                                r'''$.first_photo''',
+                                              ).toString(),
+                                              width: 210.0,
+                                              height: 105.0,
+                                              fit: BoxFit.cover,
+                                            ),
+                                          ),
+                                          Align(
+                                            alignment:
+                                                AlignmentDirectional(-1.0, 0.0),
+                                            child: Text(
+                                              getJsonField(
+                                                restauranListItem,
+                                                r'''$.name''',
+                                              ).toString().maybeHandleOverflow(
+                                                    maxChars: 25,
+                                                    replacement: '…',
+                                                  ),
+                                              style: FlutterFlowTheme.of(
+                                                      context)
+                                                  .bodyMedium
+                                                  .override(
+                                                    fontFamily:
+                                                        FlutterFlowTheme.of(
+                                                                context)
+                                                            .bodyMediumFamily,
+                                                    color: Colors.black,
+                                                    letterSpacing: 0.0,
+                                                    fontWeight: FontWeight.bold,
+                                                    useGoogleFonts:
+                                                        !FlutterFlowTheme.of(
+                                                                context)
+                                                            .bodyMediumIsCustom,
+                                                  ),
+                                            ),
+                                          ),
+                                        ],
+                                      ),
                                     ),
                                   ),
-                                ),
-                                Row(
-                                  mainAxisSize: MainAxisSize.max,
-                                  children: [
-                                    Align(
-                                      alignment:
-                                          AlignmentDirectional(-1.0, 0.0),
-                                      child: Padding(
-                                        padding: EdgeInsetsDirectional.fromSTEB(
-                                            0.0, 0.0, 80.0, 0.0),
-                                        child: Text(
-                                          'Cimbru',
-                                          style: FlutterFlowTheme.of(context)
-                                              .bodyMedium
-                                              .override(
-                                                fontFamily:
-                                                    FlutterFlowTheme.of(context)
-                                                        .bodyMediumFamily,
-                                                color: Colors.black,
-                                                letterSpacing: 0.0,
-                                                fontWeight: FontWeight.bold,
-                                                useGoogleFonts:
-                                                    !FlutterFlowTheme.of(
-                                                            context)
-                                                        .bodyMediumIsCustom,
-                                              ),
-                                        ),
-                                      ),
-                                    ),
-                                    Icon(
-                                      Icons.directions_walk,
-                                      color: Colors.black,
-                                      size: 14.0,
-                                    ),
-                                    Align(
-                                      alignment: AlignmentDirectional(1.0, 0.0),
-                                      child: Text(
-                                        '30-35min',
-                                        style: FlutterFlowTheme.of(context)
-                                            .bodyMedium
-                                            .override(
-                                              fontFamily:
-                                                  FlutterFlowTheme.of(context)
-                                                      .bodyMediumFamily,
-                                              color: Colors.black,
-                                              letterSpacing: 0.0,
-                                              fontWeight: FontWeight.bold,
-                                              useGoogleFonts:
-                                                  !FlutterFlowTheme.of(context)
-                                                      .bodyMediumIsCustom,
-                                            ),
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              ],
-                            ),
+                                );
+                              },
+                            );
+                          },
+                        );
+                      },
+                    ),
+                  ),
+                ),
+                Align(
+                  alignment: AlignmentDirectional(-1.0, 0.0),
+                  child: Padding(
+                    padding:
+                        EdgeInsetsDirectional.fromSTEB(10.0, 0.0, 0.0, 10.0),
+                    child: Text(
+                      'Great view',
+                      style: FlutterFlowTheme.of(context).bodyMedium.override(
+                            fontFamily:
+                                FlutterFlowTheme.of(context).bodyMediumFamily,
+                            color: Colors.black,
+                            fontSize: 15.0,
+                            letterSpacing: 0.0,
+                            fontWeight: FontWeight.w900,
+                            useGoogleFonts: !FlutterFlowTheme.of(context)
+                                .bodyMediumIsCustom,
                           ),
-                        ),
-                      ].divide(SizedBox(width: 10.0)),
+                    ),
+                  ),
+                ),
+                Padding(
+                  padding: EdgeInsetsDirectional.fromSTEB(0.0, 0.0, 0.0, 15.0),
+                  child: Container(
+                    width: double.infinity,
+                    height: 130.0,
+                    decoration: BoxDecoration(),
+                    child: FutureBuilder<ApiCallResponse>(
+                      future:
+                          RestaurantGroup.getFilteredRestaurantListCall.call(
+                        tags: 'Great view',
+                        city: FFAppState().selectedCity,
+                        authToken: FFAppState().token,
+                      ),
+                      builder: (context, snapshot) {
+                        // Customize what your widget looks like when it's loading.
+                        if (!snapshot.hasData) {
+                          return Center(
+                            child: SizedBox(
+                              width: 50.0,
+                              height: 50.0,
+                              child: CircularProgressIndicator(
+                                valueColor: AlwaysStoppedAnimation<Color>(
+                                  FlutterFlowTheme.of(context).primary,
+                                ),
+                              ),
+                            ),
+                          );
+                        }
+                        final listViewGetFilteredRestaurantListResponse =
+                            snapshot.data!;
+
+                        return Builder(
+                          builder: (context) {
+                            final restauranList = getJsonField(
+                              listViewGetFilteredRestaurantListResponse
+                                  .jsonBody,
+                              r'''$.restaurants''',
+                            ).toList();
+
+                            return ListView.separated(
+                              padding: EdgeInsets.zero,
+                              primary: false,
+                              scrollDirection: Axis.horizontal,
+                              itemCount: restauranList.length,
+                              separatorBuilder: (_, __) =>
+                                  SizedBox(width: 10.0),
+                              itemBuilder: (context, restauranListIndex) {
+                                final restauranListItem =
+                                    restauranList[restauranListIndex];
+                                return Padding(
+                                  padding: EdgeInsetsDirectional.fromSTEB(
+                                      10.0, 0.0, 0.0, 0.0),
+                                  child: InkWell(
+                                    splashColor: Colors.transparent,
+                                    focusColor: Colors.transparent,
+                                    hoverColor: Colors.transparent,
+                                    highlightColor: Colors.transparent,
+                                    onTap: () async {
+                                      context.pushNamed(
+                                          RestaurantInterfaceAWidget.routeName);
+                                    },
+                                    child: Container(
+                                      width: 210.0,
+                                      height: double.infinity,
+                                      decoration: BoxDecoration(
+                                        color: Color(0x00FFFFFF),
+                                      ),
+                                      child: Column(
+                                        mainAxisSize: MainAxisSize.max,
+                                        children: [
+                                          ClipRRect(
+                                            borderRadius:
+                                                BorderRadius.circular(8.0),
+                                            child: Image.network(
+                                              getJsonField(
+                                                restauranListItem,
+                                                r'''$.first_photo''',
+                                              ).toString(),
+                                              width: 210.0,
+                                              height: 105.0,
+                                              fit: BoxFit.cover,
+                                            ),
+                                          ),
+                                          Align(
+                                            alignment:
+                                                AlignmentDirectional(-1.0, 0.0),
+                                            child: Text(
+                                              getJsonField(
+                                                restauranListItem,
+                                                r'''$.name''',
+                                              ).toString().maybeHandleOverflow(
+                                                    maxChars: 25,
+                                                    replacement: '…',
+                                                  ),
+                                              style: FlutterFlowTheme.of(
+                                                      context)
+                                                  .bodyMedium
+                                                  .override(
+                                                    fontFamily:
+                                                        FlutterFlowTheme.of(
+                                                                context)
+                                                            .bodyMediumFamily,
+                                                    color: Colors.black,
+                                                    letterSpacing: 0.0,
+                                                    fontWeight: FontWeight.bold,
+                                                    useGoogleFonts:
+                                                        !FlutterFlowTheme.of(
+                                                                context)
+                                                            .bodyMediumIsCustom,
+                                                  ),
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                  ),
+                                );
+                              },
+                            );
+                          },
+                        );
+                      },
                     ),
                   ),
                 ),

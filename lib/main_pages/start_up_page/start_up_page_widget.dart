@@ -1,3 +1,4 @@
+import '/auth/custom_auth/auth_util.dart';
 import '/flutter_flow/flutter_flow_theme.dart';
 import '/flutter_flow/flutter_flow_util.dart';
 import '/index.dart';
@@ -28,7 +29,11 @@ class _StartUpPageWidgetState extends State<StartUpPageWidget> {
 
     // On page load action.
     SchedulerBinding.instance.addPostFrameCallback((_) async {
-      context.goNamed(LoginWidget.routeName);
+      if (currentUserData?.token != null && currentUserData?.token != '') {
+        context.goNamed(HomePageWidget.routeName);
+      } else {
+        context.goNamed(LoginWidget.routeName);
+      }
     });
   }
 

@@ -95,29 +95,28 @@ GoRouter createRouter(AppStateNotifier appStateNotifier) => GoRouter(
         FFRoute(
           name: ForgotPasswordWidget.routeName,
           path: ForgotPasswordWidget.routePath,
-          requireAuth: true,
           builder: (context, params) => ForgotPasswordWidget(),
         ),
         FFRoute(
           name: SignUpWidget.routeName,
           path: SignUpWidget.routePath,
-          requireAuth: true,
           builder: (context, params) => SignUpWidget(),
         ),
         FFRoute(
           name: StartUpPageWidget.routeName,
           path: StartUpPageWidget.routePath,
-          requireAuth: true,
           builder: (context, params) => StartUpPageWidget(),
         ),
         FFRoute(
-          name: SearchPageWidget.routeName,
-          path: SearchPageWidget.routePath,
-          requireAuth: true,
-          builder: (context, params) => params.isEmpty
-              ? NavBarPage(initialPage: 'search_page')
-              : SearchPageWidget(),
-        ),
+            name: SearchPageWidget.routeName,
+            path: SearchPageWidget.routePath,
+            requireAuth: true,
+            builder: (context, params) => params.isEmpty
+                ? NavBarPage(initialPage: 'search_page')
+                : NavBarPage(
+                    initialPage: 'search_page',
+                    page: SearchPageWidget(),
+                  )),
         FFRoute(
           name: ProfileMainWidget.routeName,
           path: ProfileMainWidget.routePath,
@@ -164,27 +163,17 @@ GoRouter createRouter(AppStateNotifier appStateNotifier) => GoRouter(
           name: BookingNewWidget.routeName,
           path: BookingNewWidget.routePath,
           requireAuth: true,
-          builder: (context, params) => BookingNewWidget(),
+          builder: (context, params) => params.isEmpty
+              ? NavBarPage(initialPage: 'Booking_New')
+              : BookingNewWidget(),
         ),
         FFRoute(
-          name: FavoritePageFiltersWidget.routeName,
-          path: FavoritePageFiltersWidget.routePath,
-          requireAuth: true,
-          builder: (context, params) => FavoritePageFiltersWidget(),
-        ),
-        FFRoute(
-          name: FavoritePageSearchWidget.routeName,
-          path: FavoritePageSearchWidget.routePath,
-          requireAuth: true,
-          builder: (context, params) => FavoritePageSearchWidget(),
-        ),
-        FFRoute(
-          name: BookingHistoryWidget.routeName,
-          path: BookingHistoryWidget.routePath,
+          name: BookingTabWidget.routeName,
+          path: BookingTabWidget.routePath,
           requireAuth: true,
           builder: (context, params) => params.isEmpty
-              ? NavBarPage(initialPage: 'Booking_History')
-              : BookingHistoryWidget(),
+              ? NavBarPage(initialPage: 'Booking_Tab')
+              : BookingTabWidget(),
         ),
         FFRoute(
           name: RestaurantInterfaceAWidget.routeName,
@@ -193,40 +182,22 @@ GoRouter createRouter(AppStateNotifier appStateNotifier) => GoRouter(
           builder: (context, params) => RestaurantInterfaceAWidget(),
         ),
         FFRoute(
-          name: RestaurantInterfaceInfoWidget.routeName,
-          path: RestaurantInterfaceInfoWidget.routePath,
-          requireAuth: true,
-          builder: (context, params) => RestaurantInterfaceInfoWidget(),
-        ),
-        FFRoute(
-          name: RestaurantInterfaceReviewsWidget.routeName,
-          path: RestaurantInterfaceReviewsWidget.routePath,
-          requireAuth: true,
-          builder: (context, params) => RestaurantInterfaceReviewsWidget(),
-        ),
-        FFRoute(
-          name: RestaurantInterfaceMenuWidget.routeName,
-          path: RestaurantInterfaceMenuWidget.routePath,
-          requireAuth: true,
-          builder: (context, params) => RestaurantInterfaceMenuWidget(),
-        ),
-        FFRoute(
           name: RestaurantInterfaceMapWidget.routeName,
           path: RestaurantInterfaceMapWidget.routePath,
           requireAuth: true,
           builder: (context, params) => RestaurantInterfaceMapWidget(),
         ),
         FFRoute(
-          name: CategoriesWidget.routeName,
-          path: CategoriesWidget.routePath,
+          name: RestaurantInterfaceACopyWidget.routeName,
+          path: RestaurantInterfaceACopyWidget.routePath,
           requireAuth: true,
-          builder: (context, params) => CategoriesWidget(),
+          builder: (context, params) => RestaurantInterfaceACopyWidget(),
         ),
         FFRoute(
-          name: CategoriesCopyWidget.routeName,
-          path: CategoriesCopyWidget.routePath,
+          name: BookingCompleteWidget.routeName,
+          path: BookingCompleteWidget.routePath,
           requireAuth: true,
-          builder: (context, params) => CategoriesCopyWidget(),
+          builder: (context, params) => BookingCompleteWidget(),
         )
       ].map((r) => r.toRoute(appStateNotifier)).toList(),
     );

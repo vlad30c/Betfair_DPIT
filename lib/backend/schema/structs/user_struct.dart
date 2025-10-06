@@ -14,13 +14,15 @@ class UserStruct extends BaseStruct {
     String? profilePicture,
     String? authProvider,
     String? phoneNumber,
+    String? username,
   })  : _token = token,
         _userId = userId,
         _email = email,
         _displayName = displayName,
         _profilePicture = profilePicture,
         _authProvider = authProvider,
-        _phoneNumber = phoneNumber;
+        _phoneNumber = phoneNumber,
+        _username = username;
 
   // "token" field.
   String? _token;
@@ -71,6 +73,13 @@ class UserStruct extends BaseStruct {
 
   bool hasPhoneNumber() => _phoneNumber != null;
 
+  // "username" field.
+  String? _username;
+  String get username => _username ?? '';
+  set username(String? val) => _username = val;
+
+  bool hasUsername() => _username != null;
+
   static UserStruct fromMap(Map<String, dynamic> data) => UserStruct(
         token: data['token'] as String?,
         userId: data['user_id'] as String?,
@@ -79,6 +88,7 @@ class UserStruct extends BaseStruct {
         profilePicture: data['profile_picture'] as String?,
         authProvider: data['auth_provider'] as String?,
         phoneNumber: data['phone_number'] as String?,
+        username: data['username'] as String?,
       );
 
   static UserStruct? maybeFromMap(dynamic data) =>
@@ -92,6 +102,7 @@ class UserStruct extends BaseStruct {
         'profile_picture': _profilePicture,
         'auth_provider': _authProvider,
         'phone_number': _phoneNumber,
+        'username': _username,
       }.withoutNulls;
 
   @override
@@ -122,6 +133,10 @@ class UserStruct extends BaseStruct {
         ),
         'phone_number': serializeParam(
           _phoneNumber,
+          ParamType.String,
+        ),
+        'username': serializeParam(
+          _username,
           ParamType.String,
         ),
       }.withoutNulls;
@@ -163,6 +178,11 @@ class UserStruct extends BaseStruct {
           ParamType.String,
           false,
         ),
+        username: deserializeParam(
+          data['username'],
+          ParamType.String,
+          false,
+        ),
       );
 
   @override
@@ -177,7 +197,8 @@ class UserStruct extends BaseStruct {
         displayName == other.displayName &&
         profilePicture == other.profilePicture &&
         authProvider == other.authProvider &&
-        phoneNumber == other.phoneNumber;
+        phoneNumber == other.phoneNumber &&
+        username == other.username;
   }
 
   @override
@@ -188,7 +209,8 @@ class UserStruct extends BaseStruct {
         displayName,
         profilePicture,
         authProvider,
-        phoneNumber
+        phoneNumber,
+        username
       ]);
 }
 
@@ -200,6 +222,7 @@ UserStruct createUserStruct({
   String? profilePicture,
   String? authProvider,
   String? phoneNumber,
+  String? username,
 }) =>
     UserStruct(
       token: token,
@@ -209,4 +232,5 @@ UserStruct createUserStruct({
       profilePicture: profilePicture,
       authProvider: authProvider,
       phoneNumber: phoneNumber,
+      username: username,
     );

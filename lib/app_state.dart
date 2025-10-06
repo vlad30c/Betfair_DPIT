@@ -17,7 +17,10 @@ class FFAppState extends ChangeNotifier {
   Future initializePersistedState() async {
     prefs = await SharedPreferences.getInstance();
     _safeInit(() {
-      _AuthKey = prefs.getString('ff_AuthKey') ?? _AuthKey;
+      _token = prefs.getString('ff_token') ?? _token;
+    });
+    _safeInit(() {
+      _selectedCity = prefs.getString('ff_selectedCity') ?? _selectedCity;
     });
   }
 
@@ -28,11 +31,117 @@ class FFAppState extends ChangeNotifier {
 
   late SharedPreferences prefs;
 
-  String _AuthKey = '';
-  String get AuthKey => _AuthKey;
-  set AuthKey(String value) {
-    _AuthKey = value;
-    prefs.setString('ff_AuthKey', value);
+  DateTime? _selectedDate;
+  DateTime? get selectedDate => _selectedDate;
+  set selectedDate(DateTime? value) {
+    _selectedDate = value;
+  }
+
+  String _token = '';
+  String get token => _token;
+  set token(String value) {
+    _token = value;
+    prefs.setString('ff_token', value);
+  }
+
+  String _selectedCity = 'Cluj-Napoca';
+  String get selectedCity => _selectedCity;
+  set selectedCity(String value) {
+    _selectedCity = value;
+    prefs.setString('ff_selectedCity', value);
+  }
+
+  List<String> _selectedCuisines = [];
+  List<String> get selectedCuisines => _selectedCuisines;
+  set selectedCuisines(List<String> value) {
+    _selectedCuisines = value;
+  }
+
+  void addToSelectedCuisines(String value) {
+    selectedCuisines.add(value);
+  }
+
+  void removeFromSelectedCuisines(String value) {
+    selectedCuisines.remove(value);
+  }
+
+  void removeAtIndexFromSelectedCuisines(int index) {
+    selectedCuisines.removeAt(index);
+  }
+
+  void updateSelectedCuisinesAtIndex(
+    int index,
+    String Function(String) updateFn,
+  ) {
+    selectedCuisines[index] = updateFn(_selectedCuisines[index]);
+  }
+
+  void insertAtIndexInSelectedCuisines(int index, String value) {
+    selectedCuisines.insert(index, value);
+  }
+
+  List<String> _selectedSettings = [];
+  List<String> get selectedSettings => _selectedSettings;
+  set selectedSettings(List<String> value) {
+    _selectedSettings = value;
+  }
+
+  void addToSelectedSettings(String value) {
+    selectedSettings.add(value);
+  }
+
+  void removeFromSelectedSettings(String value) {
+    selectedSettings.remove(value);
+  }
+
+  void removeAtIndexFromSelectedSettings(int index) {
+    selectedSettings.removeAt(index);
+  }
+
+  void updateSelectedSettingsAtIndex(
+    int index,
+    String Function(String) updateFn,
+  ) {
+    selectedSettings[index] = updateFn(_selectedSettings[index]);
+  }
+
+  void insertAtIndexInSelectedSettings(int index, String value) {
+    selectedSettings.insert(index, value);
+  }
+
+  List<String> _selectedPriceLevel = [];
+  List<String> get selectedPriceLevel => _selectedPriceLevel;
+  set selectedPriceLevel(List<String> value) {
+    _selectedPriceLevel = value;
+  }
+
+  void addToSelectedPriceLevel(String value) {
+    selectedPriceLevel.add(value);
+  }
+
+  void removeFromSelectedPriceLevel(String value) {
+    selectedPriceLevel.remove(value);
+  }
+
+  void removeAtIndexFromSelectedPriceLevel(int index) {
+    selectedPriceLevel.removeAt(index);
+  }
+
+  void updateSelectedPriceLevelAtIndex(
+    int index,
+    String Function(String) updateFn,
+  ) {
+    selectedPriceLevel[index] = updateFn(_selectedPriceLevel[index]);
+  }
+
+  void insertAtIndexInSelectedPriceLevel(int index, String value) {
+    selectedPriceLevel.insert(index, value);
+  }
+
+  String _reservationHour = '';
+  String get reservationHour => _reservationHour;
+  set reservationHour(String value) {
+    _reservationHour = value;
   }
 }
 

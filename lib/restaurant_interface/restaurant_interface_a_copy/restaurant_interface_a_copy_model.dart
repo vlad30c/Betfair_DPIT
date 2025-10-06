@@ -1,9 +1,10 @@
 import '/flutter_flow/flutter_flow_util.dart';
-import 'restaurant_interface_a_widget.dart' show RestaurantInterfaceAWidget;
+import 'restaurant_interface_a_copy_widget.dart'
+    show RestaurantInterfaceACopyWidget;
 import 'package:flutter/material.dart';
 
-class RestaurantInterfaceAModel
-    extends FlutterFlowModel<RestaurantInterfaceAWidget> {
+class RestaurantInterfaceACopyModel
+    extends FlutterFlowModel<RestaurantInterfaceACopyWidget> {
   ///  Local state fields for this page.
 
   String selectedTab = 'Menu';

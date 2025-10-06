@@ -1,13 +1,17 @@
+import '/auth/custom_auth/auth_util.dart';
+import '/backend/api_requests/api_calls.dart';
 import '/booking_pages/booking_calendar/booking_calendar_widget.dart';
 import '/booking_pages/booking_time/booking_time_widget.dart';
 import '/flutter_flow/flutter_flow_icon_button.dart';
 import '/flutter_flow/flutter_flow_theme.dart';
 import '/flutter_flow/flutter_flow_util.dart';
 import '/flutter_flow/flutter_flow_widgets.dart';
+import '/index.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
+import 'package:provider/provider.dart';
 import 'booking_new_model.dart';
 export 'booking_new_model.dart';
 
@@ -34,16 +38,16 @@ class _BookingNewWidgetState extends State<BookingNewWidget> {
     _model.fullNameTextController ??= TextEditingController();
     _model.fullNameFocusNode ??= FocusNode();
     _model.fullNameFocusNode!.addListener(() => safeSetState(() {}));
-    _model.ageTextController ??= TextEditingController();
-    _model.ageFocusNode ??= FocusNode();
-    _model.ageFocusNode!.addListener(() => safeSetState(() {}));
-    _model.dateOfBirthTextController ??= TextEditingController();
-    _model.dateOfBirthFocusNode ??= FocusNode();
-    _model.dateOfBirthFocusNode!.addListener(() => safeSetState(() {}));
-    _model.dateOfBirthMask = MaskTextInputFormatter(mask: '##/##/####');
-    _model.descriptionTextController ??= TextEditingController();
-    _model.descriptionFocusNode ??= FocusNode();
-    _model.descriptionFocusNode!.addListener(() => safeSetState(() {}));
+    _model.phoneNumberTextController ??= TextEditingController();
+    _model.phoneNumberFocusNode ??= FocusNode();
+    _model.phoneNumberFocusNode!.addListener(() => safeSetState(() {}));
+    _model.numberOfGuestsTextController ??= TextEditingController();
+    _model.numberOfGuestsFocusNode ??= FocusNode();
+    _model.numberOfGuestsFocusNode!.addListener(() => safeSetState(() {}));
+    _model.numberOfGuestsMask = MaskTextInputFormatter(mask: '##/##/####');
+    _model.messageTextController ??= TextEditingController();
+    _model.messageFocusNode ??= FocusNode();
+    _model.messageFocusNode!.addListener(() => safeSetState(() {}));
   }
 
   @override
@@ -55,6 +59,8 @@ class _BookingNewWidgetState extends State<BookingNewWidget> {
 
   @override
   Widget build(BuildContext context) {
+    context.watch<FFAppState>();
+
     return GestureDetector(
       onTap: () {
         FocusScope.of(context).unfocus();
@@ -64,7 +70,7 @@ class _BookingNewWidgetState extends State<BookingNewWidget> {
         key: scaffoldKey,
         backgroundColor: Colors.white,
         appBar: PreferredSize(
-          preferredSize: Size.fromHeight(63.0),
+          preferredSize: Size.fromHeight(60.0),
           child: AppBar(
             backgroundColor: FlutterFlowTheme.of(context).secondaryText,
             automaticallyImplyLeading: false,
@@ -72,27 +78,19 @@ class _BookingNewWidgetState extends State<BookingNewWidget> {
               mainAxisSize: MainAxisSize.max,
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text(
-                  'Book Appointment',
-                  style: FlutterFlowTheme.of(context).headlineMedium.override(
-                        fontFamily:
-                            FlutterFlowTheme.of(context).headlineMediumFamily,
-                        color: FlutterFlowTheme.of(context).primaryBackground,
-                        letterSpacing: 0.0,
-                        useGoogleFonts: !FlutterFlowTheme.of(context)
-                            .headlineMediumIsCustom,
-                      ),
-                ),
-                Text(
-                  'Please fill in the information below to continue.',
-                  style: FlutterFlowTheme.of(context).labelMedium.override(
-                        fontFamily:
-                            FlutterFlowTheme.of(context).labelMediumFamily,
-                        color: Color(0xFFD0B8E4),
-                        letterSpacing: 0.0,
-                        useGoogleFonts:
-                            !FlutterFlowTheme.of(context).labelMediumIsCustom,
-                      ),
+                Align(
+                  alignment: AlignmentDirectional(-1.0, 0.0),
+                  child: Text(
+                    'Book Appointment',
+                    style: FlutterFlowTheme.of(context).headlineMedium.override(
+                          fontFamily:
+                              FlutterFlowTheme.of(context).headlineMediumFamily,
+                          color: FlutterFlowTheme.of(context).primaryBackground,
+                          letterSpacing: 0.0,
+                          useGoogleFonts: !FlutterFlowTheme.of(context)
+                              .headlineMediumIsCustom,
+                        ),
+                  ),
                 ),
               ].divide(SizedBox(height: 4.0)),
             ),
@@ -100,7 +98,7 @@ class _BookingNewWidgetState extends State<BookingNewWidget> {
               Align(
                 alignment: AlignmentDirectional(1.0, 0.0),
                 child: Padding(
-                  padding: EdgeInsetsDirectional.fromSTEB(0.0, 8.0, 12.0, 8.0),
+                  padding: EdgeInsetsDirectional.fromSTEB(0.0, 0.0, 10.0, 0.0),
                   child: FlutterFlowIconButton(
                     borderColor: FlutterFlowTheme.of(context).alternate,
                     borderRadius: 12.0,
@@ -176,12 +174,14 @@ class _BookingNewWidgetState extends State<BookingNewWidget> {
                                 textCapitalization: TextCapitalization.words,
                                 obscureText: false,
                                 decoration: InputDecoration(
-                                  labelText: 'Full name*',
+                                  labelText: 'Full name',
                                   labelStyle: FlutterFlowTheme.of(context)
                                       .titleLarge
                                       .override(
                                         fontFamily: FlutterFlowTheme.of(context)
                                             .titleLargeFamily,
+                                        color: FlutterFlowTheme.of(context)
+                                            .secondaryText,
                                         letterSpacing: 0.0,
                                         useGoogleFonts:
                                             !FlutterFlowTheme.of(context)
@@ -278,8 +278,8 @@ class _BookingNewWidgetState extends State<BookingNewWidget> {
                                 ],
                               ),
                               TextFormField(
-                                controller: _model.ageTextController,
-                                focusNode: _model.ageFocusNode,
+                                controller: _model.phoneNumberTextController,
+                                focusNode: _model.phoneNumberFocusNode,
                                 autofocus: true,
                                 textCapitalization: TextCapitalization.words,
                                 obscureText: false,
@@ -367,7 +367,8 @@ class _BookingNewWidgetState extends State<BookingNewWidget> {
                                     ),
                                 cursorColor:
                                     FlutterFlowTheme.of(context).primary,
-                                validator: _model.ageTextControllerValidator
+                                validator: _model
+                                    .phoneNumberTextControllerValidator
                                     .asValidator(context),
                                 inputFormatters: [
                                   if (!isAndroid && !isiOS)
@@ -409,8 +410,8 @@ class _BookingNewWidgetState extends State<BookingNewWidget> {
                                     ),
                               ),
                               TextFormField(
-                                controller: _model.dateOfBirthTextController,
-                                focusNode: _model.dateOfBirthFocusNode,
+                                controller: _model.numberOfGuestsTextController,
+                                focusNode: _model.numberOfGuestsFocusNode,
                                 autofocus: true,
                                 textCapitalization: TextCapitalization.words,
                                 obscureText: false,
@@ -499,13 +500,13 @@ class _BookingNewWidgetState extends State<BookingNewWidget> {
                                 cursorColor:
                                     FlutterFlowTheme.of(context).primary,
                                 validator: _model
-                                    .dateOfBirthTextControllerValidator
+                                    .numberOfGuestsTextControllerValidator
                                     .asValidator(context),
-                                inputFormatters: [_model.dateOfBirthMask],
+                                inputFormatters: [_model.numberOfGuestsMask],
                               ),
                               TextFormField(
-                                controller: _model.descriptionTextController,
-                                focusNode: _model.descriptionFocusNode,
+                                controller: _model.messageTextController,
+                                focusNode: _model.messageFocusNode,
                                 autofocus: true,
                                 textCapitalization: TextCapitalization.words,
                                 obscureText: false,
@@ -597,8 +598,7 @@ class _BookingNewWidgetState extends State<BookingNewWidget> {
                                 minLines: 5,
                                 cursorColor:
                                     FlutterFlowTheme.of(context).primary,
-                                validator: _model
-                                    .descriptionTextControllerValidator
+                                validator: _model.messageTextControllerValidator
                                     .asValidator(context),
                                 inputFormatters: [
                                   if (!isAndroid && !isiOS)
@@ -661,8 +661,11 @@ class _BookingNewWidgetState extends State<BookingNewWidget> {
                                                     padding:
                                                         MediaQuery.viewInsetsOf(
                                                             context),
-                                                    child:
-                                                        BookingCalendarWidget(),
+                                                    child: Container(
+                                                      height: 350.0,
+                                                      child:
+                                                          BookingCalendarWidget(),
+                                                    ),
                                                   ),
                                                 );
                                               },
@@ -693,7 +696,17 @@ class _BookingNewWidgetState extends State<BookingNewWidget> {
                                                     .fromSTEB(
                                                         12.0, 0.0, 0.0, 0.0),
                                                 child: Text(
-                                                  'Feb. 9th',
+                                                  valueOrDefault<String>(
+                                                    dateTimeFormat(
+                                                      "MMMEd",
+                                                      FFAppState().selectedDate,
+                                                      locale:
+                                                          FFLocalizations.of(
+                                                                  context)
+                                                              .languageCode,
+                                                    ),
+                                                    'Pick available date...',
+                                                  ),
                                                   style:
                                                       FlutterFlowTheme.of(
                                                               context)
@@ -763,7 +776,11 @@ class _BookingNewWidgetState extends State<BookingNewWidget> {
                                                     padding:
                                                         MediaQuery.viewInsetsOf(
                                                             context),
-                                                    child: BookingTimeWidget(),
+                                                    child: Container(
+                                                      height: 350.0,
+                                                      child:
+                                                          BookingTimeWidget(),
+                                                    ),
                                                   ),
                                                 );
                                               },
@@ -794,7 +811,11 @@ class _BookingNewWidgetState extends State<BookingNewWidget> {
                                                     .fromSTEB(
                                                         12.0, 0.0, 0.0, 0.0),
                                                 child: Text(
-                                                  '',
+                                                  valueOrDefault<String>(
+                                                    FFAppState()
+                                                        .reservationHour,
+                                                    'Pick available hour...',
+                                                  ),
                                                   style:
                                                       FlutterFlowTheme.of(
                                                               context)
@@ -843,6 +864,25 @@ class _BookingNewWidgetState extends State<BookingNewWidget> {
                             !_model.formKey.currentState!.validate()) {
                           return;
                         }
+                        await BookingsGroup.createNewBookingCall.call(
+                          fullName: _model.fullNameTextController.text,
+                          phoneNumber: _model.phoneNumberTextController.text,
+                          authToken: currentAuthenticationToken,
+                          noGuests: int.tryParse(
+                              _model.numberOfGuestsTextController.text),
+                          specialRequests: _model.messageTextController.text,
+                          reservationTime: FFAppState().reservationHour,
+                          reservationDate: dateTimeFormat(
+                            "yMMMd",
+                            FFAppState().selectedDate,
+                            locale: FFLocalizations.of(context).languageCode,
+                          ),
+                        );
+
+                        context.goNamed(BookingCompleteWidget.routeName);
+
+                        FFAppState().selectedDate = null;
+                        FFAppState().reservationHour = '';
                       },
                       text: 'Confirm booking',
                       options: FFButtonOptions(

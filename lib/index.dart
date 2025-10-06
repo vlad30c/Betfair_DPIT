@@ -20,22 +20,13 @@ export '/profile_pages/profile_support/profile_support_widget.dart'
     show ProfileSupportWidget;
 export '/booking_pages/booking_new/booking_new_widget.dart'
     show BookingNewWidget;
-export '/favorites_page/favorite_page_filters/favorite_page_filters_widget.dart'
-    show FavoritePageFiltersWidget;
-export '/favorites_page/favorite_page_search/favorite_page_search_widget.dart'
-    show FavoritePageSearchWidget;
-export '/booking_pages/booking_history/booking_history_widget.dart'
-    show BookingHistoryWidget;
+export '/booking_pages/booking_tab/booking_tab_widget.dart'
+    show BookingTabWidget;
 export '/restaurant_interface/restaurant_interface_a/restaurant_interface_a_widget.dart'
     show RestaurantInterfaceAWidget;
-export '/restaurant_interface/restaurant_interface_info/restaurant_interface_info_widget.dart'
-    show RestaurantInterfaceInfoWidget;
-export '/restaurant_interface/restaurant_interface_reviews/restaurant_interface_reviews_widget.dart'
-    show RestaurantInterfaceReviewsWidget;
-export '/restaurant_interface/restaurant_interface_menu/restaurant_interface_menu_widget.dart'
-    show RestaurantInterfaceMenuWidget;
 export '/restaurant_interface/restaurant_interface_map/restaurant_interface_map_widget.dart'
     show RestaurantInterfaceMapWidget;
-export '/search_pages/categories/categories_widget.dart' show CategoriesWidget;
-export '/search_pages/categories_copy/categories_copy_widget.dart'
-    show CategoriesCopyWidget;
+export '/restaurant_interface/restaurant_interface_a_copy/restaurant_interface_a_copy_widget.dart'
+    show RestaurantInterfaceACopyWidget;
+export '/booking_pages/booking_complete/booking_complete_widget.dart'
+    show BookingCompleteWidget;

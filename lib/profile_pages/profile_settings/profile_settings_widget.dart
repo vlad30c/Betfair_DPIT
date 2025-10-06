@@ -72,26 +72,6 @@ class _ProfileSettingsWidgetState extends State<ProfileSettingsWidget> {
         mainAxisSize: MainAxisSize.max,
         children: [
           Padding(
-            padding: EdgeInsetsDirectional.fromSTEB(20.0, 0.0, 20.0, 0.0),
-            child: Row(
-              mainAxisSize: MainAxisSize.max,
-              children: [
-                Expanded(
-                  child: Text(
-                    'Choose what notifcations you want to recieve below and we will update the settings.',
-                    style: FlutterFlowTheme.of(context).labelMedium.override(
-                          fontFamily:
-                              FlutterFlowTheme.of(context).labelMediumFamily,
-                          letterSpacing: 0.0,
-                          useGoogleFonts:
-                              !FlutterFlowTheme.of(context).labelMediumIsCustom,
-                        ),
-                  ),
-                ),
-              ],
-            ),
-          ),
-          Padding(
             padding: EdgeInsetsDirectional.fromSTEB(0.0, 12.0, 0.0, 0.0),
             child: Material(
               color: Colors.transparent,
@@ -123,8 +103,8 @@ class _ProfileSettingsWidgetState extends State<ProfileSettingsWidget> {
                       ),
                 ),
                 tileColor: FlutterFlowTheme.of(context).secondaryBackground,
-                activeColor: FlutterFlowTheme.of(context).primary,
-                activeTrackColor: FlutterFlowTheme.of(context).accent1,
+                activeColor: FlutterFlowTheme.of(context).secondaryBackground,
+                activeTrackColor: FlutterFlowTheme.of(context).secondaryText,
                 dense: false,
                 controlAffinity: ListTileControlAffinity.trailing,
                 contentPadding:
@@ -160,8 +140,8 @@ class _ProfileSettingsWidgetState extends State<ProfileSettingsWidget> {
                     ),
               ),
               tileColor: FlutterFlowTheme.of(context).secondaryBackground,
-              activeColor: FlutterFlowTheme.of(context).primary,
-              activeTrackColor: FlutterFlowTheme.of(context).accent1,
+              activeColor: FlutterFlowTheme.of(context).secondaryBackground,
+              activeTrackColor: FlutterFlowTheme.of(context).secondaryText,
               dense: false,
               controlAffinity: ListTileControlAffinity.trailing,
               contentPadding:
@@ -186,7 +166,7 @@ class _ProfileSettingsWidgetState extends State<ProfileSettingsWidget> {
                     ),
               ),
               subtitle: Text(
-                'Allow us to track your location, this helps keep track of spending and keeps you safe.',
+                'Allow us to track your location in order to better match you with nearby restaurants',
                 style: FlutterFlowTheme.of(context).bodyMedium.override(
                       fontFamily: FlutterFlowTheme.of(context).bodyMediumFamily,
                       color: Color(0xFF8B97A2),
@@ -196,8 +176,8 @@ class _ProfileSettingsWidgetState extends State<ProfileSettingsWidget> {
                     ),
               ),
               tileColor: FlutterFlowTheme.of(context).secondaryBackground,
-              activeColor: FlutterFlowTheme.of(context).primary,
-              activeTrackColor: FlutterFlowTheme.of(context).accent1,
+              activeColor: FlutterFlowTheme.of(context).secondaryBackground,
+              activeTrackColor: FlutterFlowTheme.of(context).secondaryText,
               dense: false,
               controlAffinity: ListTileControlAffinity.trailing,
               contentPadding:
@@ -210,13 +190,13 @@ class _ProfileSettingsWidgetState extends State<ProfileSettingsWidget> {
               onPressed: () async {
                 context.pop();
               },
-              text: 'Change Changes',
+              text: 'Confirm',
               options: FFButtonOptions(
                 width: 190.0,
                 height: 50.0,
                 padding: EdgeInsetsDirectional.fromSTEB(0.0, 0.0, 0.0, 0.0),
                 iconPadding: EdgeInsetsDirectional.fromSTEB(0.0, 0.0, 0.0, 0.0),
-                color: FlutterFlowTheme.of(context).primary,
+                color: FlutterFlowTheme.of(context).secondaryText,
                 textStyle: FlutterFlowTheme.of(context).titleSmall.override(
                       fontFamily: FlutterFlowTheme.of(context).titleSmallFamily,
                       color: Colors.white,

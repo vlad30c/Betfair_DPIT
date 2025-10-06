@@ -50,8 +50,15 @@ class _BookingCalendarWidgetState extends State<BookingCalendarWidget> {
           weekFormat: false,
           weekStartsMonday: false,
           rowHeight: 48.0,
-          onChange: (DateTimeRange? newSelectedDate) {
-            safeSetState(() => _model.calendarSelectedDay = newSelectedDate);
+          onChange: (DateTimeRange? newSelectedDate) async {
+            if (_model.calendarSelectedDay == newSelectedDate) {
+              return;
+            }
+            _model.calendarSelectedDay = newSelectedDate;
+            FFAppState().selectedDate = _model.calendarSelectedDay?.start;
+            _model.updatePage(() {});
+            Navigator.pop(context);
+            safeSetState(() {});
           },
           titleStyle: FlutterFlowTheme.of(context).titleLarge.override(
                 fontFamily: FlutterFlowTheme.of(context).titleLargeFamily,
@@ -82,6 +89,7 @@ class _BookingCalendarWidgetState extends State<BookingCalendarWidget> {
                 useGoogleFonts:
                     !FlutterFlowTheme.of(context).labelMediumIsCustom,
               ),
+          locale: FFLocalizations.of(context).languageCode,
         ),
       ),
     );

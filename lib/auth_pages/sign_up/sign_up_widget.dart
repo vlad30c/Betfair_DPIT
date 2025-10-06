@@ -1,12 +1,11 @@
 import '/auth/custom_auth/auth_util.dart';
 import '/backend/api_requests/api_calls.dart';
+import '/backend/schema/structs/index.dart';
 import '/flutter_flow/flutter_flow_theme.dart';
 import '/flutter_flow/flutter_flow_util.dart';
 import '/flutter_flow/flutter_flow_widgets.dart';
-import '/backend/schema/structs/index.dart';
 import '/index.dart';
 import 'package:flutter/material.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'sign_up_model.dart';
 export 'sign_up_model.dart';
 
@@ -36,9 +35,6 @@ class _SignUpWidgetState extends State<SignUpWidget> {
     _model.emailAddressTextController ??= TextEditingController();
     _model.emailAddressFocusNode ??= FocusNode();
 
-    _model.phoneNumberTextController ??= TextEditingController();
-    _model.phoneNumberFocusNode ??= FocusNode();
-
     _model.passwordTextController ??= TextEditingController();
     _model.passwordFocusNode ??= FocusNode();
 
@@ -67,6 +63,8 @@ class _SignUpWidgetState extends State<SignUpWidget> {
           top: true,
           child: Row(
             mainAxisSize: MainAxisSize.max,
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.center,
             children: [
               Expanded(
                 flex: 6,
@@ -97,6 +95,7 @@ class _SignUpWidgetState extends State<SignUpWidget> {
                               padding: EdgeInsets.all(24.0),
                               child: Column(
                                 mainAxisSize: MainAxisSize.max,
+                                mainAxisAlignment: MainAxisAlignment.center,
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
                                   Text(
@@ -311,98 +310,6 @@ class _SignUpWidgetState extends State<SignUpWidget> {
                                             TextInputType.emailAddress,
                                         validator: _model
                                             .emailAddressTextControllerValidator
-                                            .asValidator(context),
-                                      ),
-                                    ),
-                                  ),
-                                  Padding(
-                                    padding: EdgeInsetsDirectional.fromSTEB(
-                                        0.0, 0.0, 0.0, 16.0),
-                                    child: Container(
-                                      width: double.infinity,
-                                      child: TextFormField(
-                                        controller:
-                                            _model.phoneNumberTextController,
-                                        focusNode: _model.phoneNumberFocusNode,
-                                        autofocus: true,
-                                        autofillHints: [AutofillHints.email],
-                                        obscureText: false,
-                                        decoration: InputDecoration(
-                                          labelText: 'Phone number',
-                                          labelStyle: FlutterFlowTheme.of(
-                                                  context)
-                                              .labelLarge
-                                              .override(
-                                                fontFamily:
-                                                    FlutterFlowTheme.of(context)
-                                                        .labelLargeFamily,
-                                                letterSpacing: 0.0,
-                                                useGoogleFonts:
-                                                    !FlutterFlowTheme.of(
-                                                            context)
-                                                        .labelLargeIsCustom,
-                                              ),
-                                          enabledBorder: OutlineInputBorder(
-                                            borderSide: BorderSide(
-                                              color:
-                                                  FlutterFlowTheme.of(context)
-                                                      .primaryBackground,
-                                              width: 2.0,
-                                            ),
-                                            borderRadius:
-                                                BorderRadius.circular(12.0),
-                                          ),
-                                          focusedBorder: OutlineInputBorder(
-                                            borderSide: BorderSide(
-                                              color:
-                                                  FlutterFlowTheme.of(context)
-                                                      .primary,
-                                              width: 2.0,
-                                            ),
-                                            borderRadius:
-                                                BorderRadius.circular(12.0),
-                                          ),
-                                          errorBorder: OutlineInputBorder(
-                                            borderSide: BorderSide(
-                                              color:
-                                                  FlutterFlowTheme.of(context)
-                                                      .error,
-                                              width: 2.0,
-                                            ),
-                                            borderRadius:
-                                                BorderRadius.circular(12.0),
-                                          ),
-                                          focusedErrorBorder:
-                                              OutlineInputBorder(
-                                            borderSide: BorderSide(
-                                              color:
-                                                  FlutterFlowTheme.of(context)
-                                                      .error,
-                                              width: 2.0,
-                                            ),
-                                            borderRadius:
-                                                BorderRadius.circular(12.0),
-                                          ),
-                                          filled: true,
-                                          fillColor:
-                                              FlutterFlowTheme.of(context)
-                                                  .secondary,
-                                        ),
-                                        style: FlutterFlowTheme.of(context)
-                                            .bodyLarge
-                                            .override(
-                                              fontFamily:
-                                                  FlutterFlowTheme.of(context)
-                                                      .bodyLargeFamily,
-                                              letterSpacing: 0.0,
-                                              useGoogleFonts:
-                                                  !FlutterFlowTheme.of(context)
-                                                      .bodyLargeIsCustom,
-                                            ),
-                                        keyboardType:
-                                            TextInputType.emailAddress,
-                                        validator: _model
-                                            .phoneNumberTextControllerValidator
                                             .asValidator(context),
                                       ),
                                     ),
@@ -635,26 +542,40 @@ class _SignUpWidgetState extends State<SignUpWidget> {
                                       onPressed: () async {
                                         Function() _navigate = () {};
                                         // Press Create account button
-                                        _model.apiResulto5t =
+                                        _model.authResponse =
                                             await AuthenticationGroup
                                                 .createAccountCall
-                                                .call();
+                                                .call(
+                                          username: _model
+                                              .usernameTextController.text,
+                                          email: _model
+                                              .emailAddressTextController.text,
+                                          password1: _model
+                                              .passwordTextController.text,
+                                          password2: _model
+                                              .passwordConfirmTextController
+                                              .text,
+                                        );
 
-                                        if ((_model.apiResulto5t?.succeeded ??
-                                            true)) {
+                                        if ((_model.authResponse?.statusCode ??
+                                                200) ==
+                                            201) {
                                           GoRouter.of(context)
                                               .prepareAuthEvent();
                                           await authManager.signIn(
-                                            authenticationToken:
-                                                UserStruct.maybeFromMap((_model
-                                                            .apiResulto5t
-                                                            ?.jsonBody ??
-                                                        ''))
-                                                    ?.token,
-                                            userData: UserStruct.maybeFromMap(
-                                                (_model.apiResulto5t
-                                                        ?.jsonBody ??
-                                                    '')),
+                                            authenticationToken: getJsonField(
+                                              (_model.authResponse?.jsonBody ??
+                                                  ''),
+                                              r'''$.key''',
+                                            ).toString(),
+                                            userData: UserStruct(
+                                              token: currentAuthenticationToken,
+                                              email: _model
+                                                  .emailAddressTextController
+                                                  .text,
+                                              username: _model
+                                                  .usernameTextController.text,
+                                            ),
                                           );
                                           _navigate = () => context.goNamedAuth(
                                               HomePageWidget.routeName,
@@ -698,125 +619,6 @@ class _SignUpWidgetState extends State<SignUpWidget> {
                                       ),
                                     ),
                                   ),
-                                  Padding(
-                                    padding: EdgeInsetsDirectional.fromSTEB(
-                                        0.0, 0.0, 0.0, 24.0),
-                                    child: Container(
-                                      width: double.infinity,
-                                      child: Stack(
-                                        alignment:
-                                            AlignmentDirectional(0.0, 0.0),
-                                        children: [
-                                          Align(
-                                            alignment:
-                                                AlignmentDirectional(0.0, 0.0),
-                                            child: Padding(
-                                              padding: EdgeInsetsDirectional
-                                                  .fromSTEB(
-                                                      0.0, 12.0, 0.0, 12.0),
-                                              child: Container(
-                                                width: double.infinity,
-                                                height: 2.0,
-                                                decoration: BoxDecoration(
-                                                  color: FlutterFlowTheme.of(
-                                                          context)
-                                                      .alternate,
-                                                ),
-                                              ),
-                                            ),
-                                          ),
-                                          Align(
-                                            alignment:
-                                                AlignmentDirectional(0.0, 0.0),
-                                            child: Container(
-                                              width: 70.0,
-                                              height: 32.0,
-                                              decoration: BoxDecoration(
-                                                color:
-                                                    FlutterFlowTheme.of(context)
-                                                        .primaryBackground,
-                                              ),
-                                              alignment: AlignmentDirectional(
-                                                  0.0, 0.0),
-                                              child: Text(
-                                                'OR',
-                                                style:
-                                                    FlutterFlowTheme.of(context)
-                                                        .labelLarge
-                                                        .override(
-                                                          fontFamily:
-                                                              FlutterFlowTheme.of(
-                                                                      context)
-                                                                  .labelLargeFamily,
-                                                          letterSpacing: 0.0,
-                                                          useGoogleFonts:
-                                                              !FlutterFlowTheme
-                                                                      .of(context)
-                                                                  .labelLargeIsCustom,
-                                                        ),
-                                              ),
-                                            ),
-                                          ),
-                                        ],
-                                      ),
-                                    ),
-                                  ),
-                                  Padding(
-                                    padding: EdgeInsetsDirectional.fromSTEB(
-                                        0.0, 0.0, 0.0, 16.0),
-                                    child: FFButtonWidget(
-                                      onPressed: () {
-                                        print('Button pressed ...');
-                                      },
-                                      text: 'Continue with Google',
-                                      icon: FaIcon(
-                                        FontAwesomeIcons.google,
-                                        size: 20.0,
-                                      ),
-                                      options: FFButtonOptions(
-                                        width: double.infinity,
-                                        height: 44.0,
-                                        padding: EdgeInsetsDirectional.fromSTEB(
-                                            0.0, 0.0, 0.0, 0.0),
-                                        iconPadding:
-                                            EdgeInsetsDirectional.fromSTEB(
-                                                0.0, 0.0, 0.0, 0.0),
-                                        color: FlutterFlowTheme.of(context)
-                                            .primaryBackground,
-                                        textStyle: FlutterFlowTheme.of(context)
-                                            .titleSmall
-                                            .override(
-                                              fontFamily:
-                                                  FlutterFlowTheme.of(context)
-                                                      .titleSmallFamily,
-                                              color:
-                                                  FlutterFlowTheme.of(context)
-                                                      .primaryText,
-                                              letterSpacing: 0.0,
-                                              useGoogleFonts:
-                                                  !FlutterFlowTheme.of(context)
-                                                      .titleSmallIsCustom,
-                                            ),
-                                        elevation: 0.0,
-                                        borderSide: BorderSide(
-                                          color: FlutterFlowTheme.of(context)
-                                              .secondary,
-                                          width: 2.0,
-                                        ),
-                                        borderRadius:
-                                            BorderRadius.circular(12.0),
-                                        hoverColor: FlutterFlowTheme.of(context)
-                                            .primaryBackground,
-                                        hoverBorderSide: BorderSide(
-                                          color: FlutterFlowTheme.of(context)
-                                              .primaryText,
-                                          width: 2.0,
-                                        ),
-                                      ),
-                                    ),
-                                  ),
-
-                                  // You will have to add an action on this rich text to go to your login page.
                                   Align(
                                     alignment: AlignmentDirectional(0.0, 0.0),
                                     child: Padding(
@@ -829,7 +631,7 @@ class _SignUpWidgetState extends State<SignUpWidget> {
                                         highlightColor: Colors.transparent,
                                         onTap: () async {
                                           context
-                                              .pushNamed(LoginWidget.routeName);
+                                              .goNamed(LoginWidget.routeName);
                                         },
                                         child: RichText(
                                           textScaler:
@@ -881,6 +683,23 @@ class _SignUpWidgetState extends State<SignUpWidget> {
                                           ),
                                         ),
                                       ),
+                                    ),
+                                  ),
+                                  Align(
+                                    alignment: AlignmentDirectional(0.0, 0.0),
+                                    child: Text(
+                                      'Hello World',
+                                      style: FlutterFlowTheme.of(context)
+                                          .bodyMedium
+                                          .override(
+                                            fontFamily:
+                                                FlutterFlowTheme.of(context)
+                                                    .bodyMediumFamily,
+                                            letterSpacing: 0.0,
+                                            useGoogleFonts:
+                                                !FlutterFlowTheme.of(context)
+                                                    .bodyMediumIsCustom,
+                                          ),
                                     ),
                                   ),
                                 ],

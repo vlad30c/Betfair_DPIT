@@ -1,8 +1,8 @@
 import '/flutter_flow/flutter_flow_util.dart';
-import 'booking_history_widget.dart' show BookingHistoryWidget;
+import 'booking_tab_widget.dart' show BookingTabWidget;
 import 'package:flutter/material.dart';
 
-class BookingHistoryModel extends FlutterFlowModel<BookingHistoryWidget> {
+class BookingTabModel extends FlutterFlowModel<BookingTabWidget> {
   @override
   void initState(BuildContext context) {}
 

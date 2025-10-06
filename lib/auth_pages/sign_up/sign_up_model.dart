@@ -15,10 +15,6 @@ class SignUpModel extends FlutterFlowModel<SignUpWidget> {
   FocusNode? emailAddressFocusNode;
   TextEditingController? emailAddressTextController;
   String? Function(BuildContext, String?)? emailAddressTextControllerValidator;
-  // State field(s) for Phone_number widget.
-  FocusNode? phoneNumberFocusNode;
-  TextEditingController? phoneNumberTextController;
-  String? Function(BuildContext, String?)? phoneNumberTextControllerValidator;
   // State field(s) for password widget.
   FocusNode? passwordFocusNode;
   TextEditingController? passwordTextController;
@@ -31,7 +27,7 @@ class SignUpModel extends FlutterFlowModel<SignUpWidget> {
   String? Function(BuildContext, String?)?
       passwordConfirmTextControllerValidator;
   // Stores action output result for [Backend Call - API (Create Account)] action in Button widget.
-  ApiCallResponse? apiResulto5t;
+  ApiCallResponse? authResponse;
 
   @override
   void initState(BuildContext context) {
@@ -46,9 +42,6 @@ class SignUpModel extends FlutterFlowModel<SignUpWidget> {
 
     emailAddressFocusNode?.dispose();
     emailAddressTextController?.dispose();
-
-    phoneNumberFocusNode?.dispose();
-    phoneNumberTextController?.dispose();
 
     passwordFocusNode?.dispose();
     passwordTextController?.dispose();
