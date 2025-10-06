@@ -250,10 +250,11 @@ def restaurant_files(request, format=None):
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
-@api_view(['GET', 'DELETE'])
+@api_view(['GET', 'PUT', 'PATCH', 'DELETE'])
 def restaurant_file_detail(request, id, format=None):
     """
     GET: Get a single restaurant file.
+    PUT/PATCH: Update a file (e.g., replace URL or type).
     DELETE: Remove a file.
     """
     try:
@@ -264,6 +265,14 @@ def restaurant_file_detail(request, id, format=None):
     if request.method == 'GET':
         serializer = RestaurantFilesSerializer(file)
         return Response(serializer.data)
+
+    elif request.method in ['PUT', 'PATCH']:
+        partial = request.method == 'PATCH'  # Allow partial updates
+        serializer = RestaurantFilesSerializer(file, data=request.data, partial=partial)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
     elif request.method == 'DELETE':
         file.delete()

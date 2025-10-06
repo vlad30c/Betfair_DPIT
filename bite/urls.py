@@ -15,6 +15,10 @@ urlpatterns = [
     path('restaurants/', views.restaurants),
     path('restaurants/<int:id>/', views.restaurant_detail),
 
+    # Restaurant files endpoint
+    path('restaurantfiles/', views.restaurant_files),
+    path('restaurantfiles/<int:id>/', views.restaurant_file_detail),
+
     # Unique cities ednpoint
     path('restaurants/cities/', views.unique_cities, name='unique_cities'),
     
