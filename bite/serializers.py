@@ -84,13 +84,14 @@ class RestaurantsSerializer(serializers.ModelSerializer):
     avg_rating = serializers.FloatField(read_only=True)
     first_photo = serializers.SerializerMethodField()
     is_favorited = serializers.SerializerMethodField()
+    menus = serializers.SerializerMethodField()
 
     class Meta:
         model = Restaurants
         fields = [
             'restaurant_id', 'name', 'description', 'email', 'phone_number',
             'website', 'address', 'city', 'latitude', 'longitude',
-            'price_level', 'tags', 'avg_rating', 'first_photo', 'is_favorited'
+            'price_level', 'tags', 'avg_rating', 'first_photo', 'is_favorited', 'menus'
         ]
 
     def get_first_photo(self, obj):
@@ -106,6 +107,11 @@ class RestaurantsSerializer(serializers.ModelSerializer):
         if not request or request.user.is_anonymous:
             return False
         return Favorites.objects.filter(user=request.user, restaurant=obj).exists()
+    
+    def get_menus(self, obj):
+        """Return a list of file_urls for all menu-type files."""
+        menus = obj.restaurantfiles_set.filter(type="menu")
+        return [menu.file_url for menu in menus]
 
 
 
