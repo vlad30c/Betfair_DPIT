@@ -11,6 +11,8 @@ from django.db.models import Q
 from datetime import datetime
 from django.db.models import Avg
 
+@api_view(['GET'])
+@permission_classes([IsAuthenticated])
 def get_spotlight(request):
     # Get query param ?city=Something
     city = request.query_params.get('city', None)
