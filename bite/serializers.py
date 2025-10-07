@@ -136,13 +136,13 @@ class RatingsSerializer(serializers.ModelSerializer):
         return obj.user.username
 
 class ReservationsSerializer(serializers.ModelSerializer):
+    restaurant_name = serializers.CharField(source='restaurant.name', read_only=True)
 
-    # Nested serializer for restaurant details (read-only)
-    restaurant_details = RestaurantsSerializer(source='restaurant', read_only=True)
     class Meta:
         model = Reservations
         fields = [
-            'reservation_id', 'restaurant', 'reservation_date', 'reservation_time',
+            'reservation_id', 'restaurant', 'restaurant_name',  # 👈 added here
+            'reservation_date', 'reservation_time',
             'number_of_guests', 'special_requests', 'phone_number', 'full_name'
         ]
         read_only_fields = ['reservation_id']
@@ -150,6 +150,7 @@ class ReservationsSerializer(serializers.ModelSerializer):
     def create(self, validated_data):
         validated_data['user'] = self.context['request'].user
         return super().create(validated_data)
+
 
 
 
