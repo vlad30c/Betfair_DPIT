@@ -11,10 +11,17 @@ from django.db.models import Q
 from datetime import datetime
 from django.db.models import Avg
 
-@api_view(['GET'])
-@permission_classes([IsAuthenticated])
 def get_spotlight(request):
+    # Get query param ?city=Something
+    city = request.query_params.get('city', None)
+
+    # Base queryset
     spotlights = Spotlight.objects.all().order_by('-created_at')
+
+    # If city provided, filter by restaurant's city
+    if city:
+        spotlights = spotlights.filter(restaurant__city__iexact=city)
+
     serializer = SpotlightSerializer(spotlights, many=True, context={'request': request})
     return Response({'spotlight': serializer.data}, status=status.HTTP_200_OK)
 
