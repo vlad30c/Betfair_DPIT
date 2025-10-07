@@ -34,6 +34,11 @@ urlpatterns = [
     # Favorites endpoints
     path('favorites/toggle/', toggle_favorite, name='favorites-toggle'),
     path('favorites/', favorites_list, name='favorites-list'),
+
+    # Ratings endpoints
+    path('ratings/', views.ratings),
+    path('ratings/<int:id>/', views.rating_detail),
+    path('ratings/<int:restaurant_id>/', views.restaurant_rating_summary),
 ]
 
 urlpatterns = format_suffix_patterns(urlpatterns)
