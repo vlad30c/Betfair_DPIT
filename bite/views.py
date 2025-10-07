@@ -327,9 +327,10 @@ def ratings(request, format = None):
         return Response({"ratings": serializer.data})
     
     elif request.method == 'POST':
+        # user will be automatically linked from the token
         serializer = RatingsSerializer(data=request.data)
         if serializer.is_valid():
-            serializer.save()
+            serializer.save(user=request.user)
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
