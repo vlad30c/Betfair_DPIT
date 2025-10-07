@@ -305,10 +305,17 @@ def unique_cities(request):
 def ratings(request, format = None):
     if request.method == 'GET':
         restaurant_id = request.query_params.get('restaurant', None)
+        limit = request.query_params.get('limit', None)
+
+        queryset = Ratings.objects.all()
         if restaurant_id:
-            queryset = Ratings.objects.filter(restaurant_id=restaurant_id)
-        else:
-            queryset = Ratings.objects.all()
+            queryset = queryset.filter(restaurant_id=restaurant_id)
+        
+        queryset = queryset.order_by('-rating_date')  # newest first
+        
+        if limit:
+            queryset = queryset[:int(limit)]
+            
         serializer = RatingsSerializer(queryset, many=True)
         return Response({"ratings": serializer.data})
     
