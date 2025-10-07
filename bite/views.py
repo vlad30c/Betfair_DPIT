@@ -9,6 +9,7 @@ from .serializers import UserUpdateSerializer
 from rest_framework.permissions import IsAuthenticated
 from django.db.models import Q
 from datetime import datetime
+from django.db.models import Avg
 
 class UpdateAuthenticatedUserView(generics.UpdateAPIView):
     serializer_class = UserUpdateSerializer
@@ -303,10 +304,14 @@ def unique_cities(request):
 @api_view(['GET', 'POST'])
 def ratings(request, format = None):
     if request.method == 'GET':
-        queryset = Ratings.objects.all()
+        restaurant_id = request.query_params.get('restaurant', None)
+        if restaurant_id:
+            queryset = Ratings.objects.filter(restaurant_id=restaurant_id)
+        else:
+            queryset = Ratings.objects.all()
         serializer = RatingsSerializer(queryset, many=True)
-        return Response({"ratings":serializer.data})
-
+        return Response({"ratings": serializer.data})
+    
     elif request.method == 'POST':
         serializer = RatingsSerializer(data=request.data)
         if serializer.is_valid():
@@ -314,6 +319,21 @@ def ratings(request, format = None):
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
+@api_view(['GET'])
+def restaurant_rating_summary(request, restaurant_id):
+    ratings = Ratings.objects.filter(restaurant_id=restaurant_id)
+    if not ratings.exists():
+        return Response({"average": 0, "count": 0, "distribution": {i: 0 for i in range(1, 6)}})
+    
+    average = ratings.aggregate(Avg('score'))['score__avg']
+    count = ratings.count()
+    distribution = {i: ratings.filter(score=i).count() for i in range(1, 6)}
+    
+    return Response({
+        "average": round(average, 1),
+        "count": count,
+        "distribution": distribution
+    })
 
 @api_view(['GET','PUT','DELETE'])
 def rating_detail(request, id, format=None):
