@@ -38,7 +38,7 @@ urlpatterns = [
     # Ratings endpoints
     path('ratings/', views.ratings),
     path('ratings/<int:id>/', views.rating_detail),
-    path('ratings/<int:restaurant_id>/', views.restaurant_rating_summary),
+    path('ratings/restaurant/<int:restaurant_id>/', views.restaurant_rating_summary),
 
     # Spotlight endpoint
     path('api/spotlight/', get_spotlight, name='get_spotlight'),
