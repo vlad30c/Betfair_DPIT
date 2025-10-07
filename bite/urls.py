@@ -2,7 +2,7 @@ from django.contrib import admin
 from django.urls import path, include
 from bite import views
 from rest_framework.urlpatterns import format_suffix_patterns
-from .views import UpdateAuthenticatedUserView, get_current_user, toggle_favorite, favorites_list
+from .views import UpdateAuthenticatedUserView, get_current_user, toggle_favorite, favorites_list, get_spotlight
 
 
 urlpatterns = [
@@ -39,6 +39,9 @@ urlpatterns = [
     path('ratings/', views.ratings),
     path('ratings/<int:id>/', views.rating_detail),
     path('ratings/<int:restaurant_id>/', views.restaurant_rating_summary),
+
+    # Spotlight endpoint
+    path('api/spotlight/', get_spotlight, name='get_spotlight'),
 ]
 
 urlpatterns = format_suffix_patterns(urlpatterns)

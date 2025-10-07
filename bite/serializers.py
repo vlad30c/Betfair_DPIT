@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import Tags, Menucategories, Menuitems, Menutypes, RestaurantSchedules, Ratings, Reservations, Restaurants, RestaurantFiles
+from .models import Tags, Menucategories, Menuitems, Menutypes, RestaurantSchedules, Ratings, Reservations, Restaurants, RestaurantFiles, Spotlight
 from django.contrib.auth.models import User
 from .models import Profile, Favorites
 from datetime import datetime
@@ -156,10 +156,6 @@ class ReservationsSerializer(serializers.ModelSerializer):
     def create(self, validated_data):
         validated_data['user'] = self.context['request'].user
         return super().create(validated_data)
-
-
-
-
         
 class FavoritesSerializer(serializers.ModelSerializer):
     restaurant = RestaurantsSerializer(read_only=True)  # nest it here
@@ -167,3 +163,10 @@ class FavoritesSerializer(serializers.ModelSerializer):
     class Meta:
         model = Favorites
         fields = ['id', 'restaurant']  # no 'first_photo' here
+
+class SpotlightSerializer(serializers.ModelSerializer):
+    restaurant_details = RestaurantsSerializer(source='restaurant', read_only=True)
+
+    class Meta:
+        model = Spotlight
+        fields = ['id', 'restaurant', 'restaurant_details']

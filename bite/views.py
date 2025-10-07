@@ -1,6 +1,6 @@
 from django.http import JsonResponse
-from .models import Tags, Restaurants, RestaurantSchedules, RestaurantFiles, Ratings, Reservations, Favorites
-from .serializers import TagsSerializer, RestaurantsSerializer, RestaurantSchedulesSerializer, RestaurantFilesSerializer, RatingsSerializer, ReservationsSerializer, FavoritesSerializer
+from .models import Tags, Restaurants, RestaurantSchedules, RestaurantFiles, Ratings, Reservations, Favorites, Spotlight
+from .serializers import TagsSerializer, RestaurantsSerializer, RestaurantSchedulesSerializer, RestaurantFilesSerializer, RatingsSerializer, ReservationsSerializer, FavoritesSerializer, SpotlightSerializer
 from rest_framework.decorators import api_view, permission_classes
 from rest_framework.response import Response
 from rest_framework import status
@@ -10,6 +10,13 @@ from rest_framework.permissions import IsAuthenticated
 from django.db.models import Q
 from datetime import datetime
 from django.db.models import Avg
+
+@api_view(['GET'])
+@permission_classes([IsAuthenticated])
+def get_spotlight(request):
+    spotlights = Spotlight.objects.all().order_by('-created_at')
+    serializer = SpotlightSerializer(spotlights, many=True, context={'request': request})
+    return Response({'spotlight': serializer.data}, status=status.HTTP_200_OK)
 
 class UpdateAuthenticatedUserView(generics.UpdateAPIView):
     serializer_class = UserUpdateSerializer
